@@ -45,7 +45,7 @@ const updateclassesetudiantsById = (req, res) => {
 // Delete student by ID
 const deleteclassesetudiantsById = (req, res) => {
     const { id } = req.params;
-    const sql = 'DELETE FROM classesetudiants WHERE ID_Etudiant = ?';
+    const sql = 'DELETE FROM classesetudiants WHERE ID_Classe = ?';
     connection.query(sql, [id], (err, result) => {
         if (err) return res.status(500).send(err.toString());
         if (result.affectedRows === 0) return res.status(404).send('Student not found');

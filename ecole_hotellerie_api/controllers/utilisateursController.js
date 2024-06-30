@@ -1,56 +1,62 @@
 const connection = require('../config/db');
 
-// Get all students
-const getAllEtudiants = (req, res) => {
-    const sql = 'SELECT * FROM Etudiants';
+// Get all utilisateurs
+const getAllUtilisateurs = (req, res) => {
+    const sql = 'SELECT * FROM utilisateurs';
     connection.query(sql, (err, results) => {
         if (err) return res.status(500).send(err.toString());
         res.send(results);
     });
 };
 
-// Get student by ID
-const getEtudiantById = (req, res) => {
+// Get utilisateur by ID
+const getUtilisateurById = (req, res) => {
     const { id } = req.params;
-    const sql = 'SELECT * FROM Etudiants WHERE ID_Etudiant = ?';
+    const sql = 'SELECT * FROM utilisateurs WHERE ID_Utilisateur = ?';
     connection.query(sql, [id], (err, results) => {
         if (err) return res.status(500).send(err.toString());
-        if (results.length === 0) return res.status(404).send('Student not found');
+        if (results.length === 0) return res.status(404).send('Utilisateur not found');
         res.send(results[0]);
     });
 };
 
-// Create new student
-const createEtudiant = (req, res) => {
-    const { NumEtudiant, PrenomEtudiant, NomEtudiant, Sexe, DateNaissance, LieuNaissance, Adresse, Tel, Nationalite, ID_Filiere } = req.body;
-    const sql = 'INSERT INTO Etudiants (NumEtudiant, PrenomEtudiant, NomEtudiant, Sexe, DateNaissance, LieuNaissance, Adresse, Tel, Nationalite, ID_Filiere) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
-    connection.query(sql, [NumEtudiant, PrenomEtudiant, NomEtudiant, Sexe, DateNaissance, LieuNaissance, Adresse, Tel, Nationalite, ID_Filiere], (err, result) => {
+// Create new utilisateur
+const createUtilisateur = (req, res) => {
+    const { ID_Utilisateur, NomUtilisateur, PrenomUtilisateur, Email, MotDePasse, ID_Role } = req.body;
+    const sql = 'INSERT INTO utilisateurs (ID_Utilisateur, NomUtilisateur, PrenomUtilisateur, Email, MotDePasse, ID_Role) VALUES (?, ?, ?, ?, ?, ?)';
+    connection.query(sql, [ID_Utilisateur, NomUtilisateur, PrenomUtilisateur, Email, MotDePasse, ID_Role], (err, result) => {
         if (err) return res.status(500).send(err.toString());
-        res.send('Student created successfully!');
+        res.send('Utilisateur created successfully!');
     });
 };
 
-// Update student by ID
-const updateEtudiantById = (req, res) => {
+// Update utilisateur by ID
+const updateUtilisateurById = (req, res) => {
     const { id } = req.params;
-    const { NumEtudiant, PrenomEtudiant, NomEtudiant, Sexe, DateNaissance, LieuNaissance, Adresse, Tel, Nationalite, ID_Filiere } = req.body;
-    const sql = 'UPDATE Etudiants SET NumEtudiant = ?, PrenomEtudiant = ?, NomEtudiant = ?, Sexe = ?, DateNaissance = ?, LieuNaissance = ?, Adresse = ?, Tel = ?, Nationalite = ?, ID_Filiere = ? WHERE ID_Etudiant = ?';
-    connection.query(sql, [NumEtudiant, PrenomEtudiant, NomEtudiant, Sexe, DateNaissance, LieuNaissance, Adresse, Tel, Nationalite, ID_Filiere, id], (err, result) => {
+    const { NomUtilisateur, PrenomUtilisateur, Email, MotDePasse, ID_Role } = req.body;
+    const sql = 'UPDATE utilisateurs SET NomUtilisateur = ?, PrenomUtilisateur = ?, Email = ?, MotDePasse = ?, ID_Role = ? WHERE ID_Utilisateur = ?';
+    connection.query(sql, [NomUtilisateur, PrenomUtilisateur, Email, MotDePasse, ID_Role, id], (err, result) => {
         if (err) return res.status(500).send(err.toString());
-        if (result.affectedRows === 0) return res.status(404).send('Student not found');
-        res.send('Student updated successfully!');
+        if (result.affectedRows === 0) return res.status(404).send('Utilisateur not found');
+        res.send('Utilisateur updated successfully!');
     });
 };
 
-// Delete student by ID
-const deleteEtudiantById = (req, res) => {
+// Delete utilisateur by ID
+const deleteUtilisateurById = (req, res) => {
     const { id } = req.params;
-    const sql = 'DELETE FROM Etudiants WHERE ID_Etudiant = ?';
+    const sql = 'DELETE FROM utilisateurs WHERE ID_Utilisateur = ?';
     connection.query(sql, [id], (err, result) => {
         if (err) return res.status(500).send(err.toString());
-        if (result.affectedRows === 0) return res.status(404).send('Student not found');
-        res.send('Student deleted successfully!');
+        if (result.affectedRows === 0) return res.status(404).send('Utilisateur not found');
+        res.send('Utilisateur deleted successfully!');
     });
 };
 
-module.exports = { getAllEtudiants, getEtudiantById, createEtudiant, updateEtudiantById, deleteEtudiantById };
+module.exports = {
+    getAllUtilisateurs,
+    getUtilisateurById,
+    createUtilisateur,
+    updateUtilisateurById,
+    deleteUtilisateurById
+};
