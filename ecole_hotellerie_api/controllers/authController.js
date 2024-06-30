@@ -33,7 +33,9 @@ const login = (req, res) => {
         if (!validPass) return res.status(400).send('Invalid password');
 
         const token = jwt.sign({ id: user.ID_Utilisateur, role: user.ID_Role }, process.env.JWT_SECRET, { expiresIn: '1h' });
-        res.header('Authorization', token).send('Logged in!');
+        res.header('Authorization', token).json({ token });
+         // Return the token in the response body
+
     });
 };
 
