@@ -1,56 +1,62 @@
 const connection = require('../config/db');
 
-// Get all students
-const getAllPersonnels = (req, res) => {
-    const sql = 'SELECT * FROM Personnel';
+// Get all personnel
+const getAllPersonnel = (req, res) => {
+    const sql = 'SELECT * FROM personnel';
     connection.query(sql, (err, results) => {
         if (err) return res.status(500).send(err.toString());
         res.send(results);
     });
 };
 
-// Get student by ID
+// Get personnel by ID
 const getPersonnelById = (req, res) => {
     const { id } = req.params;
-    const sql = 'SELECT * FROM Personnel WHERE ID_Personnel = ?';
+    const sql = 'SELECT * FROM personnel WHERE ID_Personnel = ?';
     connection.query(sql, [id], (err, results) => {
         if (err) return res.status(500).send(err.toString());
-        if (results.length === 0) return res.status(404).send('Student not found');
+        if (results.length === 0) return res.status(404).send('Personnel not found');
         res.send(results[0]);
     });
 };
 
-// Create new student
+// Create new personnel
 const createPersonnel = (req, res) => {
-    const { EtatPersonnel, NomPersonnel, PrenomPersonnel, Titre, DateEmbauche, DateNaissance} = req.body;
-    const sql = 'INSERT INTO Personnel (EtatPersonnel, NomPersonnel, PrenomPersonnel, Titre, DateEmbauche, DateNaissance) VALUES (?, ?, ?, ?, ?, ?)';
-    connection.query(sql, [EtatPersonnel, NomPersonnel, PrenomPersonnel, Titre, DateEmbauche, DateNaissance], (err, result) => {
+    const { ID_Personnel, EtatPersonnel, NomPersonnel, PrenomPersonnel, Titre, DateEmbauche, DateNaissance } = req.body;
+    const sql = 'INSERT INTO personnel (ID_Personnel, EtatPersonnel, NomPersonnel, PrenomPersonnel, Titre, DateEmbauche, DateNaissance) VALUES (?, ?, ?, ?, ?, ?, ?)';
+    connection.query(sql, [ID_Personnel, EtatPersonnel, NomPersonnel, PrenomPersonnel, Titre, DateEmbauche, DateNaissance], (err, result) => {
         if (err) return res.status(500).send(err.toString());
-        res.send('Student created successfully!');
+        res.send('Personnel created successfully!');
     });
 };
 
-// Update student by ID
-const updatePersonnelsById = (req, res) => {
+// Update personnel by ID
+const updatePersonnelById = (req, res) => {
     const { id } = req.params;
-    const {EtatPersonnel, NomPersonnel, PrenomPersonnel, Titre, DateEmbauche, DateNaissance } = req.body;
-    const sql = 'UPDATE Personnel SET EtatPersonnel = ?, NomPersonnel = ?, PrenomPersonnel = ?, Titre = ?, DateEmbauche = ?, DateNaissance = ? WHERE ID_Personnel = ?';
+    const { EtatPersonnel, NomPersonnel, PrenomPersonnel, Titre, DateEmbauche, DateNaissance } = req.body;
+    const sql = 'UPDATE personnel SET EtatPersonnel = ?, NomPersonnel = ?, PrenomPersonnel = ?, Titre = ?, DateEmbauche = ?, DateNaissance = ? WHERE ID_Personnel = ?';
     connection.query(sql, [EtatPersonnel, NomPersonnel, PrenomPersonnel, Titre, DateEmbauche, DateNaissance, id], (err, result) => {
         if (err) return res.status(500).send(err.toString());
-        if (result.affectedRows === 0) return res.status(404).send('Student not found');
-        res.send('Student updated successfully!');
+        if (result.affectedRows === 0) return res.status(404).send('Personnel not found');
+        res.send('Personnel updated successfully!');
     });
 };
 
-// Delete student by ID
+// Delete personnel by ID
 const deletePersonnelById = (req, res) => {
     const { id } = req.params;
-    const sql = 'DELETE FROM Personnel WHERE ID_Personnel = ?';
+    const sql = 'DELETE FROM personnel WHERE ID_Personnel = ?';
     connection.query(sql, [id], (err, result) => {
         if (err) return res.status(500).send(err.toString());
-        if (result.affectedRows === 0) return res.status(404).send('Student not found');
-        res.send('Student deleted successfully!');
+        if (result.affectedRows === 0) return res.status(404).send('Personnel not found');
+        res.send('Personnel deleted successfully!');
     });
 };
 
-module.exports = { getAllPersonnels, getPersonnelById, createPersonnel, updatePersonnelsById, deletePersonnelById };
+module.exports = {
+    getAllPersonnel,
+    getPersonnelById,
+    createPersonnel,
+    updatePersonnelById,
+    deletePersonnelById
+};
