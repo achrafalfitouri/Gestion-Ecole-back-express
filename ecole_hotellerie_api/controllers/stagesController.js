@@ -22,9 +22,9 @@ const getStageById = (req, res) => {
 
 // Create new stage
 const createStage = (req, res) => {
-    const { ID_Stage, ID_Etudiant, Entreprise, DateDebut, DateFin, Tuteur } = req.body;
-    const sql = 'INSERT INTO stages (ID_Stage, ID_Etudiant, Entreprise, DateDebut, DateFin, Tuteur) VALUES (?, ?, ?, ?, ?, ?)';
-    connection.query(sql, [ID_Stage, ID_Etudiant, Entreprise, DateDebut, DateFin, Tuteur], (err, result) => {
+    const {  ID_Etudiant, Entreprise, DateDebut, DateFin, Tuteur } = req.body;
+    const sql = 'INSERT INTO stages ( ID_Etudiant, Entreprise, DateDebut, DateFin, Tuteur) VALUES ( ?, ?, ?, ?, ?)';
+    connection.query(sql, [ID_Etudiant, Entreprise, DateDebut, DateFin, Tuteur], (err, result) => {
         if (err) return res.status(500).send(err.toString());
         res.send('Stage created successfully!');
     });

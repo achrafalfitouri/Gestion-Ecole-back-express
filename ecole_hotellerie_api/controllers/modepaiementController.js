@@ -22,9 +22,9 @@ const getModePaiementById = (req, res) => {
 
 // Create new modepaiement
 const createModePaiement = (req, res) => {
-    const { ID_ModePaiement, ModePaiement } = req.body;
-    const sql = 'INSERT INTO modepaiement (ID_ModePaiement, ModePaiement) VALUES (?, ?)';
-    connection.query(sql, [ID_ModePaiement, ModePaiement], (err, result) => {
+    const {  ModePaiement } = req.body;
+    const sql = 'INSERT INTO modepaiement ( ModePaiement) VALUES ( ?)';
+    connection.query(sql, [ ModePaiement], (err, result) => {
         if (err) return res.status(500).send(err.toString());
         res.send('Mode de paiement created successfully!');
     });

@@ -15,30 +15,30 @@ const getdetailsfactureById = (req, res) => {
     const sql = 'SELECT * FROM detailsfacture WHERE ID_DetailFacture = ?';
     connection.query(sql, [id], (err, results) => {
         if (err) return res.status(500).send(err.toString());
-        if (results.length === 0) return res.status(404).send('Student not found');
+        if (results.length === 0) return res.status(404).send('not found');
         res.send(results[0]);
     });
 };
 
 // Create new student
 const createdetailsfacture = (req, res) => {
-    const { ID_DetailFacture,ID_Facture,Description,Quantite,PrixUnitaire } = req.body;
-    const sql = 'INSERT INTO detailsfacture ( ID_DetailFacture,ID_Facture,Description,Quantite,PrixUnitaire) VALUES (?, ?, ?, ?, ?)';
-    connection.query(sql, [ ID_DetailFacture,ID_Facture,Description,Quantite,PrixUnitaire], (err, result) => {
+    const { ID_Facture,Description,Quantite,PrixUnitaire } = req.body;
+    const sql = 'INSERT INTO detailsfacture ( ID_Facture,Description,Quantite,PrixUnitaire) VALUES ( ?, ?, ?, ?)';
+    connection.query(sql, [ ID_Facture,Description,Quantite,PrixUnitaire], (err, result) => {
         if (err) return res.status(500).send(err.toString());
-        res.send('Student created successfully!');
+        res.send(' created successfully!');
     });
 };
 
 // Update student by ID
 const updatedetailsfactureById = (req, res) => {
     const { id } = req.params;
-    const { ID_DetailFacture,ID_Facture,Description,Quantite,PrixUnitaire} = req.body;
+    const { ID_Facture,Description,Quantite,PrixUnitaire} = req.body;
     const sql = 'UPDATE detailsfacture SET ID_DetailFacture = ?, ID_Facture = ?, Description = ?, Quantite = ?, PrixUnitaire = ? where ID_DetailFacture = ? ';
-    connection.query(sql, [ ID_DetailFacture,ID_Facture,Description,Quantite,PrixUnitaire], (err, result) => {
+    connection.query(sql, [ id,ID_Facture,Description,Quantite,PrixUnitaire], (err, result) => {
         if (err) return res.status(500).send(err.toString());
-        if (result.affectedRows === 0) return res.status(404).send('Student not found');
-        res.send('Student updated successfully!');
+        if (result.affectedRows === 0) return res.status(404).send(' not found');
+        res.send('updated successfully!');
     });
 };
 
@@ -48,8 +48,8 @@ const deletedetailsfactureById = (req, res) => {
     const sql = 'DELETE FROM detailsfacture WHERE ID_DetailFacture = ?';
     connection.query(sql, [id], (err, result) => {
         if (err) return res.status(500).send(err.toString());
-        if (result.affectedRows === 0) return res.status(404).send('Student not found');
-        res.send('Student deleted successfully!');
+        if (result.affectedRows === 0) return res.status(404).send(' not found');
+        res.send('deleted successfully!');
     });
 };
 

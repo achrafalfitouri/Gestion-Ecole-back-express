@@ -22,9 +22,9 @@ const getNiveauById = (req, res) => {
 
 // Create new niveau
 const createNiveau = (req, res) => {
-    const { ID_Niveau, ID_Classe, Niveau } = req.body;
-    const sql = 'INSERT INTO niveau (ID_Niveau, ID_Classe, Niveau) VALUES (?, ?, ?)';
-    connection.query(sql, [ID_Niveau, ID_Classe, Niveau], (err, result) => {
+    const { ID_Classe, Niveau } = req.body;
+    const sql = 'INSERT INTO niveau ( ID_Classe, Niveau) VALUES ( ?, ?)';
+    connection.query(sql, [ID_Classe, Niveau], (err, result) => {
         if (err) return res.status(500).send(err.toString());
         res.send('Niveau created successfully!');
     });

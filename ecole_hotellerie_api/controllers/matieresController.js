@@ -23,7 +23,7 @@ const getMatiereById = (req, res) => {
 // Create new matiere
 const createMatiere = (req, res) => {
     const { ID_Matiere, NomMatiere, ID_Classe, ID_Formateur } = req.body;
-    const sql = 'INSERT INTO matieres (ID_Matiere, NomMatiere, ID_Classe, ID_Formateur) VALUES (?, ?, ?, ?)';
+    const sql = 'INSERT INTO matieres ( NomMatiere, ID_Classe, ID_Formateur) VALUES ( ?, ?, ?)';
     connection.query(sql, [ID_Matiere, NomMatiere, ID_Classe, ID_Formateur], (err, result) => {
         if (err) return res.status(500).send(err.toString());
         res.send('Matiere created successfully!');

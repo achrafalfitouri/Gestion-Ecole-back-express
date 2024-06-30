@@ -15,7 +15,7 @@ const getevaluationsstageById = (req, res) => {
     const sql = 'SELECT * FROM evaluationsstage WHERE ID_Evaluation = ?';
     connection.query(sql, [id], (err, results) => {
         if (err) return res.status(500).send(err.toString());
-        if (results.length === 0) return res.status(404).send('Student not found');
+        if (results.length === 0) return res.status(404).send('not found');
         res.send(results[0]);
     });
 };
@@ -23,22 +23,22 @@ const getevaluationsstageById = (req, res) => {
 // Create new student
 const createevaluationsstage = (req, res) => {
     const { ID_Evaluation,ID_Stage,Commentaires,Note} = req.body;
-    const sql = 'INSERT INTO evaluationsstage ( ID_Evaluation,ID_Stage,Commentaires,Note) VALUES (?, ?, ?, ?)';
+    const sql = 'INSERT INTO evaluationsstage ( ID_Stage,Commentaires,Note) VALUES (?, ?, ?)';
     connection.query(sql, [ ID_Evaluation,ID_Stage,Commentaires,Note], (err, result) => {
         if (err) return res.status(500).send(err.toString());
-        res.send('Student created successfully!');
+        res.send('created successfully!');
     });
 };
 
 // Update student by ID
 const updateevaluationsstageById = (req, res) => {
     const { id } = req.params;
-    const {  ID_Evaluation,ID_Stage,Commentaires,Note} = req.body;
-    const sql = 'UPDATE evaluationsstage SET ID_Evaluation = ?, ID_Stage = ?, Commentaires = ?, Note = ? where ID_Evaluation = ? ';
-    connection.query(sql, [ ID_Evaluation,ID_Stage,Commentaires,Note], (err, result) => {
+    const {  ID_Stage,Commentaires,Note} = req.body;
+    const sql = 'UPDATE evaluationsstage SET  ID_Stage = ?, Commentaires = ?, Note = ? where ID_Evaluation = ? ';
+    connection.query(sql, [ id,ID_Stage,Commentaires,Note], (err, result) => {
         if (err) return res.status(500).send(err.toString());
-        if (result.affectedRows === 0) return res.status(404).send('Student not found');
-        res.send('Student updated successfully!');
+        if (result.affectedRows === 0) return res.status(404).send('not found');
+        res.send('updated successfully!');
     });
 };
 
@@ -48,8 +48,8 @@ const deleteevaluationsstageById = (req, res) => {
     const sql = 'DELETE FROM evaluationsstage WHERE ID_Evaluation = ?';
     connection.query(sql, [id], (err, result) => {
         if (err) return res.status(500).send(err.toString());
-        if (result.affectedRows === 0) return res.status(404).send('Student not found');
-        res.send('Student deleted successfully!');
+        if (result.affectedRows === 0) return res.status(404).send('not found');
+        res.send('deleted successfully!');
     });
 };
 

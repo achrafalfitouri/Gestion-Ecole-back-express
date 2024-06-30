@@ -22,9 +22,9 @@ const getFournisseurById = (req, res) => {
 
 // Create new fournisseur
 const createFournisseur = (req, res) => {
-    const { ID_Fournisseur, NomFournisseur, Adresse, Tel, Email } = req.body;
-    const sql = 'INSERT INTO fournisseurs (ID_Fournisseur, NomFournisseur, Adresse, Tel, Email) VALUES (?, ?, ?, ?, ?)';
-    connection.query(sql, [ID_Fournisseur, NomFournisseur, Adresse, Tel, Email], (err, result) => {
+    const {  NomFournisseur, Adresse, Tel, Email } = req.body;
+    const sql = 'INSERT INTO fournisseurs ( NomFournisseur, Adresse, Tel, Email) VALUES (?, ?, ?, ?)';
+    connection.query(sql, [id, NomFournisseur, Adresse, Tel, Email], (err, result) => {
         if (err) return res.status(500).send(err.toString());
         res.send('Fournisseur created successfully!');
     });

@@ -22,9 +22,9 @@ const getFiliereById = (req, res) => {
 
 // Create new filiere
 const createFiliere = (req, res) => {
-    const { ID_Filiere, NomFiliere } = req.body;
-    const sql = 'INSERT INTO filiere (ID_Filiere, NomFiliere) VALUES (?, ?)';
-    connection.query(sql, [ID_Filiere, NomFiliere], (err, result) => {
+    const {  NomFiliere } = req.body;
+    const sql = 'INSERT INTO filiere ( NomFiliere) VALUES ( ?)';
+    connection.query(sql, [ id,NomFiliere], (err, result) => {
         if (err) return res.status(500).send(err.toString());
         res.send('Filiere created successfully!');
     });

@@ -22,9 +22,9 @@ const getInscriptionById = (req, res) => {
 
 // Create new inscription
 const createInscription = (req, res) => {
-    const { ID_Inscription, ID_Etudiant, DateDebutInscription, DateFinInscription, FraisInscription, FraisTransport, MontantInscription } = req.body;
-    const sql = 'INSERT INTO inscriptions (ID_Inscription, ID_Etudiant, DateDebutInscription, DateFinInscription, FraisInscription, FraisTransport, MontantInscription) VALUES (?, ?, ?, ?, ?, ?, ?)';
-    connection.query(sql, [ID_Inscription, ID_Etudiant, DateDebutInscription, DateFinInscription, FraisInscription, FraisTransport, MontantInscription], (err, result) => {
+    const {  ID_Etudiant, DateDebutInscription, DateFinInscription, FraisInscription, FraisTransport, MontantInscription } = req.body;
+    const sql = 'INSERT INTO inscriptions ( ID_Etudiant, DateDebutInscription, DateFinInscription, FraisInscription, FraisTransport, MontantInscription) VALUES ( ?, ?, ?, ?, ?, ?)';
+    connection.query(sql, [ ID_Etudiant, DateDebutInscription, DateFinInscription, FraisInscription, FraisTransport, MontantInscription], (err, result) => {
         if (err) return res.status(500).send(err.toString());
         res.send('Inscription created successfully!');
     });

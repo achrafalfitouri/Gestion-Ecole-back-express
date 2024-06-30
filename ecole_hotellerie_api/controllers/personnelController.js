@@ -22,9 +22,9 @@ const getPersonnelById = (req, res) => {
 
 // Create new personnel
 const createPersonnel = (req, res) => {
-    const { ID_Personnel, EtatPersonnel, NomPersonnel, PrenomPersonnel, Titre, DateEmbauche, DateNaissance } = req.body;
-    const sql = 'INSERT INTO personnel (ID_Personnel, EtatPersonnel, NomPersonnel, PrenomPersonnel, Titre, DateEmbauche, DateNaissance) VALUES (?, ?, ?, ?, ?, ?, ?)';
-    connection.query(sql, [ID_Personnel, EtatPersonnel, NomPersonnel, PrenomPersonnel, Titre, DateEmbauche, DateNaissance], (err, result) => {
+    const {  EtatPersonnel, NomPersonnel, PrenomPersonnel, Titre, DateEmbauche, DateNaissance } = req.body;
+    const sql = 'INSERT INTO personnel ( EtatPersonnel, NomPersonnel, PrenomPersonnel, Titre, DateEmbauche, DateNaissance) VALUES ( ?, ?, ?, ?, ?, ?)';
+    connection.query(sql, [EtatPersonnel, NomPersonnel, PrenomPersonnel, Titre, DateEmbauche, DateNaissance], (err, result) => {
         if (err) return res.status(500).send(err.toString());
         res.send('Personnel created successfully!');
     });

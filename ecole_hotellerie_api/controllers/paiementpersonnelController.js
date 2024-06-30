@@ -22,9 +22,9 @@ const getPaiementPersonnelById = (req, res) => {
 
 // Create new paiementpersonnel
 const createPaiementPersonnel = (req, res) => {
-    const { ID_PaiementPersonnel, ID_Personnel, ID_TypePaiement, DatePaiementPersonnel, Montant } = req.body;
-    const sql = 'INSERT INTO paiementpersonnel (ID_PaiementPersonnel, ID_Personnel, ID_TypePaiement, DatePaiementPersonnel, Montant) VALUES (?, ?, ?, ?, ?)';
-    connection.query(sql, [ID_PaiementPersonnel, ID_Personnel, ID_TypePaiement, DatePaiementPersonnel, Montant], (err, result) => {
+    const {  ID_Personnel, ID_TypePaiement, DatePaiementPersonnel, Montant } = req.body;
+    const sql = 'INSERT INTO paiementpersonnel (ID_Personnel, ID_TypePaiement, DatePaiementPersonnel, Montant) VALUES (?, ?, ?, ?)';
+    connection.query(sql, [ID_Personnel, ID_TypePaiement, DatePaiementPersonnel, Montant], (err, result) => {
         if (err) return res.status(500).send(err.toString());
         res.send('PaiementPersonnel created successfully!');
     });

@@ -22,9 +22,9 @@ const getUtilisateurById = (req, res) => {
 
 // Create new utilisateur
 const createUtilisateur = (req, res) => {
-    const { ID_Utilisateur, NomUtilisateur, PrenomUtilisateur, Email, MotDePasse, ID_Role } = req.body;
-    const sql = 'INSERT INTO utilisateurs (ID_Utilisateur, NomUtilisateur, PrenomUtilisateur, Email, MotDePasse, ID_Role) VALUES (?, ?, ?, ?, ?, ?)';
-    connection.query(sql, [ID_Utilisateur, NomUtilisateur, PrenomUtilisateur, Email, MotDePasse, ID_Role], (err, result) => {
+    const {  NomUtilisateur, PrenomUtilisateur, Email, MotDePasse, ID_Role } = req.body;
+    const sql = 'INSERT INTO utilisateurs ( NomUtilisateur, PrenomUtilisateur, Email, MotDePasse, ID_Role) VALUES ( ?, ?, ?, ?, ?)';
+    connection.query(sql, [ NomUtilisateur, PrenomUtilisateur, Email, MotDePasse, ID_Role], (err, result) => {
         if (err) return res.status(500).send(err.toString());
         res.send('Utilisateur created successfully!');
     });
