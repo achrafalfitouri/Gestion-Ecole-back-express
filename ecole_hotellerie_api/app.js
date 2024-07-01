@@ -1,5 +1,7 @@
 const express = require('express');
 const cors = require('cors');
+const connection = require('./config/db');
+
 const bodyParser = require('body-parser');
 const authRoutes = require('./routes/authRoutes');  // Ensure this path is correct
 const etudiantRoutes = require('./routes/etudiantsRoutes');  // Ensure this path is correct
@@ -22,14 +24,48 @@ const stagesRoutes = require('./routes/stagesRoutes');  // Ensure this path is c
 const typepaiementRoutes = require('./routes/typepaiementRoutes');  // Ensure this path is correct
 const utilisateursRoutes = require('./routes/utilisateursRoutes');  // Ensure this path is correct
 const paiementpersonnelRoutes = require('./routes/paiementpersonnelRoutes');  // Ensure this path is correct
+const planingRoutes = require('./routes/planingRoutes');  // Ensure this path is correct
+const rendezvousRoutes = require('./routes/rendezvousRoutes');  // Ensure this path is correct
 
 const authenticateJWT = require('./middleware/auth');  // Ensure this path is correct
+const multer = require('multer');
+const path = require('path');
+
+
+const storage = multer.diskStorage({
+    destination: './upload/images',
+    filename: (req, file, cb) => {
+        return cb(null,`${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`)
+    }
+})
+
+
+const upload = multer({ storage: storage });
+
+
+
+
+
 
 const app = express();
 
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(cors());
+
+
+app.post('/api/etud/:id' ,upload.single('PhotoProfil'),(req,res)=>{
+    const { id } = req.params;
+    const PhotoProfil = req.file.filename;
+    const sql = "UPDATE etudiants SET PhotoProfil = ? WHERE ID_Etudiant = ? ";
+    connection.query(sql, [PhotoProfil,id], (err, result) => {
+    if(err) return res.json({Message: "Error"});
+    return res.json({Status: "Success"});
+})
+})
+
+
 
 app.use('/api/absence', absenceRoutes);
 app.use('/api/anneescolaire', anneescolaireRoutes);
@@ -52,6 +88,8 @@ app.use('/api/personnels', personnelRoutes);
 app.use('/api/stages', stagesRoutes);
 app.use('/api/typepaiement', typepaiementRoutes);
 app.use('/api/utilisateurs', utilisateursRoutes);
+app.use('/api/planing', planingRoutes);
+app.use('/api/rendezvous', rendezvousRoutes);
 
 
 const PORT = process.env.PORT || 3000;

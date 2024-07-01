@@ -22,9 +22,9 @@ const getPersonnelById = (req, res) => {
 
 // Create new personnel
 const createPersonnel = (req, res) => {
-    const {  EtatPersonnel, NomPersonnel, PrenomPersonnel, Titre, DateEmbauche, DateNaissance } = req.body;
-    const sql = 'INSERT INTO personnel ( EtatPersonnel, NomPersonnel, PrenomPersonnel, Titre, DateEmbauche, DateNaissance) VALUES ( ?, ?, ?, ?, ?, ?)';
-    connection.query(sql, [EtatPersonnel, NomPersonnel, PrenomPersonnel, Titre, DateEmbauche, DateNaissance], (err, result) => {
+    const {  EtatPersonnel, NomPersonnel, PrenomPersonnel, Titre,Salaire, DateEmbauche, DateNaissance } = req.body;
+    const sql = 'INSERT INTO personnel ( EtatPersonnel, NomPersonnel, PrenomPersonnel, Titre,Salaire, DateEmbauche, DateNaissance) VALUES ( ?,?, ?, ?, ?, ?, ?)';
+    connection.query(sql, [EtatPersonnel, NomPersonnel, PrenomPersonnel, Titre,Salaire, DateEmbauche, DateNaissance], (err, result) => {
         if (err) return res.status(500).send(err.toString());
         res.send('Personnel created successfully!');
     });
@@ -33,9 +33,9 @@ const createPersonnel = (req, res) => {
 // Update personnel by ID
 const updatePersonnelById = (req, res) => {
     const { id } = req.params;
-    const { EtatPersonnel, NomPersonnel, PrenomPersonnel, Titre, DateEmbauche, DateNaissance } = req.body;
-    const sql = 'UPDATE personnel SET EtatPersonnel = ?, NomPersonnel = ?, PrenomPersonnel = ?, Titre = ?, DateEmbauche = ?, DateNaissance = ? WHERE ID_Personnel = ?';
-    connection.query(sql, [EtatPersonnel, NomPersonnel, PrenomPersonnel, Titre, DateEmbauche, DateNaissance, id], (err, result) => {
+    const { EtatPersonnel, NomPersonnel, PrenomPersonnel, Titre,Salaire, DateEmbauche, DateNaissance } = req.body;
+    const sql = 'UPDATE personnel SET EtatPersonnel = ?, NomPersonnel = ?, PrenomPersonnel = ?, Titre = ?,Salaire = ?, DateEmbauche = ?, DateNaissance = ? WHERE ID_Personnel = ?';
+    connection.query(sql, [EtatPersonnel, NomPersonnel, PrenomPersonnel, Titre,Salaire, DateEmbauche, DateNaissance, id], (err, result) => {
         if (err) return res.status(500).send(err.toString());
         if (result.affectedRows === 0) return res.status(404).send('Personnel not found');
         res.send('Personnel updated successfully!');
