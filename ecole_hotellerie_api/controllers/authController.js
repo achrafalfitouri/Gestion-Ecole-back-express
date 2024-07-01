@@ -34,9 +34,18 @@ const login = (req, res) => {
 
         const token = jwt.sign({ id: user.ID_Utilisateur, role: user.ID_Role }, process.env.JWT_SECRET, { expiresIn: '1h' });
         res.header('Authorization', token).json({ token });
-         // Return the token in the response body
-
     });
 };
 
-module.exports = { register, login };
+const getAuthenticatedUser = (req, res) => {
+    const userId = req.user.id;
+
+    const sql = 'SELECT ID_Utilisateur, NomUtilisateur, PrenomUtilisateur, Email, ID_Role FROM Utilisateurs WHERE ID_Utilisateur = ?';
+    connection.query(sql, [userId], (err, results) => {
+        if (err) throw err;
+        if (results.length === 0) return res.status(404).send('User not found');
+        res.json(results[0]);
+    });
+};
+
+module.exports = { register, login, getAuthenticatedUser };

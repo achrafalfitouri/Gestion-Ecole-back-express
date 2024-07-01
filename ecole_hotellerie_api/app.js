@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const bodyParser = require('body-parser');
 const authRoutes = require('./routes/authRoutes');  // Ensure this path is correct
 const etudiantRoutes = require('./routes/etudiantsRoutes');  // Ensure this path is correct
@@ -28,6 +29,7 @@ const app = express();
 
 app.use(bodyParser.json());
 
+app.use(cors());
 
 app.use('/api/absence', absenceRoutes);
 app.use('/api/anneescolaire', anneescolaireRoutes);
