@@ -67,6 +67,7 @@ app.post('/api/etud/:id' ,upload.single('PhotoProfil'),(req,res)=>{
 
 
 
+
 app.use('/api/absence', absenceRoutes);
 app.use('/api/anneescolaire', anneescolaireRoutes);
 app.use('/api/auth', authRoutes);

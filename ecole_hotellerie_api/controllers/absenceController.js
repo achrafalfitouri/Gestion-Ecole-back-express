@@ -22,9 +22,9 @@ const getAbsence = (req, res) => {
 
 // Create new absence
 const createAbsence = (req, res) => {
-    const { ID_Absence, ID_Etudiant, ID_Inscription, DateDebutAbsence, DateFinAbsence } = req.body;
-    const sql = 'INSERT INTO absence (ID_Absence, ID_Etudiant, ID_Inscription, DateDebutAbsence, DateFinAbsence) VALUES (?, ?, ?, ?, ?)';
-    connection.query(sql, [ID_Absence, ID_Etudiant, ID_Inscription, DateDebutAbsence, DateFinAbsence], (err, result) => {
+    const { ID_Absence, ID_Etudiant, ID_Inscription, DateDebutAbsence, DateFinAbsence ,created_at,updated_at} = req.body;
+    const sql = 'INSERT INTO absence (ID_Absence, ID_Etudiant, ID_Inscription, DateDebutAbsence, DateFinAbsence,created_at,updated_at) VALUES (?,?,?, ?, ?, ?, ?)';
+    connection.query(sql, [ID_Absence, ID_Etudiant, ID_Inscription, DateDebutAbsence, DateFinAbsence,created_at,updated_at], (err, result) => {
         if (err) return res.status(500).send(err.toString());
         res.send('Absence record created successfully!');
     });
@@ -33,9 +33,9 @@ const createAbsence = (req, res) => {
 // Update absence by ID
 const updateAbsenceById = (req, res) => {
     const { id } = req.params;
-    const { ID_Absence, ID_Etudiant, ID_Inscription, DateDebutAbsence, DateFinAbsence } = req.body;
-    const sql = 'UPDATE absence SET ID_Absence = ?, ID_Etudiant = ?, ID_Inscription = ?, DateDebutAbsence = ?, DateFinAbsence = ? WHERE ID_Absence = ?';
-    connection.query(sql, [ID_Absence, ID_Etudiant, ID_Inscription, DateDebutAbsence, DateFinAbsence, id], (err, result) => {
+    const { ID_Absence, ID_Etudiant, ID_Inscription, DateDebutAbsence, DateFinAbsence,created_at,updated_at } = req.body;
+    const sql = 'UPDATE absence SET ID_Absence = ?, ID_Etudiant = ?, ID_Inscription = ?, DateDebutAbsence = ?, DateFinAbsence = ?, created_at=?,updated_at=? WHERE ID_Absence = ?';
+    connection.query(sql, [ID_Absence, ID_Etudiant, ID_Inscription, DateDebutAbsence, DateFinAbsence,created_at,updated_at, id], (err, result) => {
         if (err) return res.status(500).send(err.toString());
         if (result.affectedRows === 0) return res.status(404).send('Absence record not found');
         res.send('Absence record updated successfully!');
