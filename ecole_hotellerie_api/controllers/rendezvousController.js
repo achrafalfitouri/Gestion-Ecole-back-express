@@ -23,7 +23,7 @@ const getRendezvousById = (req, res) => {
 // Create new rendezvous
 const createRendezvous = (req, res) => {
     const { ID_Utilisateur, Date, HeureDebut, HeureFin, Sujet, Description } = req.body;
-    const sql = 'INSERT INTO rendezvous (ID_Utilisateur, Date, HeureDebut, HeureFin, Sujet, Description) VALUES (?, ?, ?, ?, ?, ?)';
+    const sql = 'INSERT INTO rendezvous (ID_Utilisateur, Date, HeureDebut, HeureFin, Sujet, Description, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, NOW(), NOW())';
     connection.query(sql, [ID_Utilisateur, Date, HeureDebut, HeureFin, Sujet, Description], (err, result) => {
         if (err) return res.status(500).send(err.toString());
         res.send('Rendezvous created successfully!');
@@ -34,7 +34,7 @@ const createRendezvous = (req, res) => {
 const updateRendezvousById = (req, res) => {
     const { id } = req.params;
     const { ID_Utilisateur, Date, HeureDebut, HeureFin, Sujet, Description } = req.body;
-    const sql = 'UPDATE rendezvous SET ID_Utilisateur = ?, Date = ?, HeureDebut = ?, HeureFin = ?, Sujet = ?, Description = ? WHERE ID_RendezVous = ?';
+    const sql = 'UPDATE rendezvous SET ID_Utilisateur = ?, Date = ?, HeureDebut = ?, HeureFin = ?, Sujet = ?, Description = ?, updated_at = NOW() WHERE ID_RendezVous = ?';
     connection.query(sql, [ID_Utilisateur, Date, HeureDebut, HeureFin, Sujet, Description, id], (err, result) => {
         if (err) return res.status(500).send(err.toString());
         if (result.affectedRows === 0) return res.status(404).send('Rendezvous not found');

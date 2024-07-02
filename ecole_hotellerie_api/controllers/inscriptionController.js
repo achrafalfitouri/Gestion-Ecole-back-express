@@ -22,9 +22,9 @@ const getInscriptionById = (req, res) => {
 
 // Create new inscription
 const createInscription = (req, res) => {
-    const {  ID_Etudiant, DateDebutInscription, DateFinInscription, FraisInscription,  MontantInscription } = req.body;
-    const sql = 'INSERT INTO inscriptions ( ID_Etudiant, DateDebutInscription, DateFinInscription, FraisInscription,  MontantInscription) VALUES (  ?, ?, ?, ?, ?)';
-    connection.query(sql, [ ID_Etudiant, DateDebutInscription, DateFinInscription, FraisInscription, MontantInscription], (err, result) => {
+    const { ID_Etudiant, DateDebutInscription, DateFinInscription, FraisInscription, MontantInscription } = req.body;
+    const sql = 'INSERT INTO inscriptions (ID_Etudiant, DateDebutInscription, DateFinInscription, FraisInscription, MontantInscription, created_at, updated_at) VALUES (?, ?, ?, ?, ?, NOW(), NOW())';
+    connection.query(sql, [ID_Etudiant, DateDebutInscription, DateFinInscription, FraisInscription, MontantInscription], (err, result) => {
         if (err) return res.status(500).send(err.toString());
         res.send('Inscription created successfully!');
     });
@@ -33,9 +33,9 @@ const createInscription = (req, res) => {
 // Update inscription by ID
 const updateInscriptionById = (req, res) => {
     const { id } = req.params;
-    const { ID_Etudiant, DateDebutInscription, DateFinInscription, FraisInscription,  MontantInscription } = req.body;
-    const sql = 'UPDATE inscriptions SET ID_Etudiant = ?, DateDebutInscription = ?, DateFinInscription = ?, FraisInscription = ?,  MontantInscription = ? WHERE ID_Inscription = ?';
-    connection.query(sql, [ID_Etudiant, DateDebutInscription, DateFinInscription, FraisInscription,  MontantInscription, id], (err, result) => {
+    const { ID_Etudiant, DateDebutInscription, DateFinInscription, FraisInscription, MontantInscription } = req.body;
+    const sql = 'UPDATE inscriptions SET ID_Etudiant = ?, DateDebutInscription = ?, DateFinInscription = ?, FraisInscription = ?, MontantInscription = ?, updated_at = NOW() WHERE ID_Inscription = ?';
+    connection.query(sql, [ID_Etudiant, DateDebutInscription, DateFinInscription, FraisInscription, MontantInscription, id], (err, result) => {
         if (err) return res.status(500).send(err.toString());
         if (result.affectedRows === 0) return res.status(404).send('Inscription not found');
         res.send('Inscription updated successfully!');

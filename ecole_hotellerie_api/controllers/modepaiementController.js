@@ -22,9 +22,9 @@ const getModePaiementById = (req, res) => {
 
 // Create new modepaiement
 const createModePaiement = (req, res) => {
-    const {  ModePaiement } = req.body;
-    const sql = 'INSERT INTO modepaiement ( ModePaiement) VALUES ( ?)';
-    connection.query(sql, [ ModePaiement], (err, result) => {
+    const { ModePaiement } = req.body;
+    const sql = 'INSERT INTO modepaiement (ModePaiement, created_at, updated_at) VALUES (?, NOW(), NOW())';
+    connection.query(sql, [ModePaiement], (err, result) => {
         if (err) return res.status(500).send(err.toString());
         res.send('Mode de paiement created successfully!');
     });
@@ -34,7 +34,7 @@ const createModePaiement = (req, res) => {
 const updateModePaiementById = (req, res) => {
     const { id } = req.params;
     const { ModePaiement } = req.body;
-    const sql = 'UPDATE modepaiement SET ModePaiement = ? WHERE ID_ModePaiement = ?';
+    const sql = 'UPDATE modepaiement SET ModePaiement = ?, updated_at = NOW() WHERE ID_ModePaiement = ?';
     connection.query(sql, [ModePaiement, id], (err, result) => {
         if (err) return res.status(500).send(err.toString());
         if (result.affectedRows === 0) return res.status(404).send('Mode de paiement not found');

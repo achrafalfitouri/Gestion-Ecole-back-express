@@ -1,6 +1,6 @@
 const connection = require('../config/db');
 
-// Get all students
+// Get all factures
 const getAllfactures = (req, res) => {
     const sql = 'SELECT * FROM factures';
     connection.query(sql, (err, results) => {
@@ -9,47 +9,47 @@ const getAllfactures = (req, res) => {
     });
 };
 
-// Get student by ID
+// Get facture by ID
 const getfacturesById = (req, res) => {
     const { id } = req.params;
     const sql = 'SELECT * FROM factures WHERE ID_Facture = ?';
     connection.query(sql, [id], (err, results) => {
         if (err) return res.status(500).send(err.toString());
-        if (results.length === 0) return res.status(404).send('not found');
+        if (results.length === 0) return res.status(404).send('Facture not found');
         res.send(results[0]);
     });
 };
 
-// Create new student
+// Create new facture
 const createfactures = (req, res) => {
-    const {ID_Facture,TypeFacture,DateFacture,Montant,ID_Fournisseur} = req.body;
-    const sql = 'INSERT INTO factures (TypeFacture,DateFacture,Montant,ID_Fournisseur) VALUES ( ?, ?, ?, ?)';
-    connection.query(sql, [ID_Facture,TypeFacture,DateFacture,Montant,ID_Fournisseur], (err, result) => {
+    const { TypeFacture, DateFacture, Montant, ID_Fournisseur } = req.body;
+    const sql = 'INSERT INTO factures (TypeFacture, DateFacture, Montant, ID_Fournisseur, created_at, updated_at) VALUES (?, ?, ?, ?, NOW(), NOW())';
+    connection.query(sql, [TypeFacture, DateFacture, Montant, ID_Fournisseur], (err, result) => {
         if (err) return res.status(500).send(err.toString());
-        res.send('created successfully!');
+        res.send('Facture created successfully!');
     });
 };
 
-// Update student by ID
+// Update facture by ID
 const updatefacturesById = (req, res) => {
     const { id } = req.params;
-    const { TypeFacture,DateFacture,Montant,ID_Fournisseur } = req.body;
-    const sql = 'UPDATE factures SET TypeFacture = ?, DateFacture = ?, Montant = ?, ID_Fournisseur = ? where ID_Facture = ? ';
-    connection.query(sql, [id,TypeFacture,DateFacture,Montant,ID_Fournisseur], (err, result) => {
+    const { TypeFacture, DateFacture, Montant, ID_Fournisseur } = req.body;
+    const sql = 'UPDATE factures SET TypeFacture = ?, DateFacture = ?, Montant = ?, ID_Fournisseur = ?, updated_at = NOW() WHERE ID_Facture = ?';
+    connection.query(sql, [TypeFacture, DateFacture, Montant, ID_Fournisseur, id], (err, result) => {
         if (err) return res.status(500).send(err.toString());
-        if (result.affectedRows === 0) return res.status(404).send(' not found');
-        res.send('updated successfully!');
+        if (result.affectedRows === 0) return res.status(404).send('Facture not found');
+        res.send('Facture updated successfully!');
     });
 };
 
-// Delete student by ID
+// Delete facture by ID
 const deletefacturesById = (req, res) => {
     const { id } = req.params;
     const sql = 'DELETE FROM factures WHERE ID_Facture = ?';
     connection.query(sql, [id], (err, result) => {
         if (err) return res.status(500).send(err.toString());
-        if (result.affectedRows === 0) return res.status(404).send('not found');
-        res.send('deleted successfully!');
+        if (result.affectedRows === 0) return res.status(404).send('Facture not found');
+        res.send('Facture deleted successfully!');
     });
 };
 

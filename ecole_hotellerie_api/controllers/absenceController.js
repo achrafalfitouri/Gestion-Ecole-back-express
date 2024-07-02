@@ -34,7 +34,7 @@ const createAbsence = (req, res) => {
 const updateAbsenceById = (req, res) => {
     const { id } = req.params;
     const { ID_Absence, ID_Etudiant, ID_Inscription, DateDebutAbsence, DateFinAbsence,created_at,updated_at } = req.body;
-    const sql = 'UPDATE absence SET ID_Absence = ?, ID_Etudiant = ?, ID_Inscription = ?, DateDebutAbsence = ?, DateFinAbsence = ?, created_at=?,updated_at=? WHERE ID_Absence = ?';
+    const sql = 'UPDATE absence SET ID_Absence = ?, ID_Etudiant = ?, ID_Inscription = ?, DateDebutAbsence = ?, DateFinAbsence = ?, created_at=?,updated_at=NOW() WHERE ID_Absence = ?';
     connection.query(sql, [ID_Absence, ID_Etudiant, ID_Inscription, DateDebutAbsence, DateFinAbsence,created_at,updated_at, id], (err, result) => {
         if (err) return res.status(500).send(err.toString());
         if (result.affectedRows === 0) return res.status(404).send('Absence record not found');

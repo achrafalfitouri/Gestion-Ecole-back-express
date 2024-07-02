@@ -22,9 +22,9 @@ const getMatiereById = (req, res) => {
 
 // Create new matiere
 const createMatiere = (req, res) => {
-    const { ID_Matiere, NomMatiere, ID_Classe, ID_Formateur } = req.body;
-    const sql = 'INSERT INTO matieres ( NomMatiere, ID_Classe, ID_Formateur) VALUES ( ?, ?, ?)';
-    connection.query(sql, [ID_Matiere, NomMatiere, ID_Classe, ID_Formateur], (err, result) => {
+    const { NomMatiere, ID_Classe, ID_Formateur } = req.body;
+    const sql = 'INSERT INTO matieres (NomMatiere, ID_Classe, ID_Formateur, created_at, updated_at) VALUES (?, ?, ?, NOW(), NOW())';
+    connection.query(sql, [NomMatiere, ID_Classe, ID_Formateur], (err, result) => {
         if (err) return res.status(500).send(err.toString());
         res.send('Matiere created successfully!');
     });
@@ -34,7 +34,7 @@ const createMatiere = (req, res) => {
 const updateMatiereById = (req, res) => {
     const { id } = req.params;
     const { NomMatiere, ID_Classe, ID_Formateur } = req.body;
-    const sql = 'UPDATE matieres SET NomMatiere = ?, ID_Classe = ?, ID_Formateur = ? WHERE ID_Matiere = ?';
+    const sql = 'UPDATE matieres SET NomMatiere = ?, ID_Classe = ?, ID_Formateur = ?, updated_at = NOW() WHERE ID_Matiere = ?';
     connection.query(sql, [NomMatiere, ID_Classe, ID_Formateur, id], (err, result) => {
         if (err) return res.status(500).send(err.toString());
         if (result.affectedRows === 0) return res.status(404).send('Matiere not found');

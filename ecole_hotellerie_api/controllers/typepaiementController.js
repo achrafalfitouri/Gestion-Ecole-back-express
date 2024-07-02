@@ -22,9 +22,9 @@ const getTypePaiementById = (req, res) => {
 
 // Create new typepaiement
 const createTypePaiement = (req, res) => {
-    const {  TypePaiement } = req.body;
-    const sql = 'INSERT INTO typepaiement ( TypePaiement) VALUES ( ?)';
-    connection.query(sql, [ID_TypePaiement, TypePaiement], (err, result) => {
+    const { TypePaiement } = req.body;
+    const sql = 'INSERT INTO typepaiement (TypePaiement) VALUES (?)';
+    connection.query(sql, [TypePaiement], (err, result) => {
         if (err) return res.status(500).send(err.toString());
         res.send('TypePaiement created successfully!');
     });

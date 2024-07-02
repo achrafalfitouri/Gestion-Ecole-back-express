@@ -1,7 +1,7 @@
 const connection = require('../config/db');
 
-// Get all students
-const getAllAnneeScolaire	 = (req, res) => {
+// Get all school years
+const getAllAnneeScolaire = (req, res) => {
     const sql = 'SELECT * FROM anneescolaire';
     connection.query(sql, (err, results) => {
         if (err) return res.status(500).send(err.toString());
@@ -9,48 +9,54 @@ const getAllAnneeScolaire	 = (req, res) => {
     });
 };
 
-// Get student by ID
+// Get school year by ID
 const getAnneeScolaireById = (req, res) => {
     const { id } = req.params;
     const sql = 'SELECT * FROM anneescolaire WHERE ID_AnneeScolaire = ?';
     connection.query(sql, [id], (err, results) => {
         if (err) return res.status(500).send(err.toString());
-        if (results.length === 0) return res.status(404).send('not found');
+        if (results.length === 0) return res.status(404).send('School year not found');
         res.send(results[0]);
     });
 };
 
-// Create new student
+// Create new school year
 const createAnneeScolaire = (req, res) => {
-    const { ID_AnneeScolaire,AnneeScolaire } = req.body;
-    const sql = 'INSERT INTO anneescolaire (AnneeScolaire) VALUES ( ?)';
-    connection.query(sql, [ID_AnneeScolaire,AnneeScolaire], (err, result) => {
+    const { ID_AnneeScolaire, AnneeScolaire } = req.body;
+    const sql = 'INSERT INTO anneescolaire (ID_AnneeScolaire, AnneeScolaire, created_at, updated_at) VALUES (?, ?, NOW(), NOW())';
+    connection.query(sql, [ID_AnneeScolaire, AnneeScolaire], (err, result) => {
         if (err) return res.status(500).send(err.toString());
-        res.send('created successfully!');
+        res.send('School year created successfully!');
     });
 };
 
-// Update student by ID
+// Update school year by ID
 const updateAnneeScolaireById = (req, res) => {
     const { id } = req.params;
-    const { AnneeScolaire} = req.body;
-    const sql = 'UPDATE anneescolaire SET AnneeScolaire = ? WHERE ID_AnneeScolaire = ?';
-    connection.query(sql, [AnneeScolaire,id], (err, result) => {
+    const { AnneeScolaire } = req.body;
+    const sql = 'UPDATE anneescolaire SET AnneeScolaire = ?, updated_at = NOW() WHERE ID_AnneeScolaire = ?';
+    connection.query(sql, [AnneeScolaire, id], (err, result) => {
         if (err) return res.status(500).send(err.toString());
-        if (result.affectedRows === 0) return res.status(404).send(' not found');
-        res.send('updated successfully!');
+        if (result.affectedRows === 0) return res.status(404).send('School year not found');
+        res.send('School year updated successfully!');
     });
 };
 
-// Delete student by ID
+// Delete school year by ID
 const deleteAnneeScolaireById = (req, res) => {
     const { id } = req.params;
-    const sql = 'DELETE FROM AnneeScolaire WHERE ID_AnneeScolaire = ?';
+    const sql = 'DELETE FROM anneescolaire WHERE ID_AnneeScolaire = ?';
     connection.query(sql, [id], (err, result) => {
         if (err) return res.status(500).send(err.toString());
-        if (result.affectedRows === 0) return res.status(404).send('not found');
-        res.send('deleted successfully!');
+        if (result.affectedRows === 0) return res.status(404).send('School year not found');
+        res.send('School year deleted successfully!');
     });
 };
 
-module.exports = { getAllAnneeScolaire, getAnneeScolaireById, createAnneeScolaire, updateAnneeScolaireById, deleteAnneeScolaireById };
+module.exports = {
+    getAllAnneeScolaire,
+    getAnneeScolaireById,
+    createAnneeScolaire,
+    updateAnneeScolaireById,
+    deleteAnneeScolaireById
+};

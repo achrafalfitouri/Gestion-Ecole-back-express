@@ -23,7 +23,7 @@ const getEtudiantById = (req, res) => {
 // Create new student
 const createEtudiant = (req, res) => {
     const { NumEtudiant, PrenomEtudiant, NomEtudiant, Sexe, DateNaissance, LieuNaissance, Adresse, Tel, Nationalite, ID_Filiere } = req.body;
-    const sql = 'INSERT INTO Etudiants (NumEtudiant, PrenomEtudiant, NomEtudiant, Sexe, DateNaissance, LieuNaissance, Adresse, Tel, Nationalite, ID_Filiere) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+    const sql = 'INSERT INTO Etudiants (NumEtudiant, PrenomEtudiant, NomEtudiant, Sexe, DateNaissance, LieuNaissance, Adresse, Tel, Nationalite, ID_Filiere, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())';
     connection.query(sql, [NumEtudiant, PrenomEtudiant, NomEtudiant, Sexe, DateNaissance, LieuNaissance, Adresse, Tel, Nationalite, ID_Filiere], (err, result) => {
         if (err) return res.status(500).send(err.toString());
         res.send('Student created successfully!');
@@ -34,7 +34,7 @@ const createEtudiant = (req, res) => {
 const updateEtudiantById = (req, res) => {
     const { id } = req.params;
     const { NumEtudiant, PrenomEtudiant, NomEtudiant, Sexe, DateNaissance, LieuNaissance, Adresse, Tel, Nationalite, ID_Filiere } = req.body;
-    const sql = 'UPDATE Etudiants SET NumEtudiant = ?, PrenomEtudiant = ?, NomEtudiant = ?, Sexe = ?, DateNaissance = ?, LieuNaissance = ?, Adresse = ?, Tel = ?, Nationalite = ?, ID_Filiere = ? WHERE ID_Etudiant = ?';
+    const sql = 'UPDATE Etudiants SET NumEtudiant = ?, PrenomEtudiant = ?, NomEtudiant = ?, Sexe = ?, DateNaissance = ?, LieuNaissance = ?, Adresse = ?, Tel = ?, Nationalite = ?, ID_Filiere = ?, updated_at = NOW() WHERE ID_Etudiant = ?';
     connection.query(sql, [NumEtudiant, PrenomEtudiant, NomEtudiant, Sexe, DateNaissance, LieuNaissance, Adresse, Tel, Nationalite, ID_Filiere, id], (err, result) => {
         if (err) return res.status(500).send(err.toString());
         if (result.affectedRows === 0) return res.status(404).send('Student not found');

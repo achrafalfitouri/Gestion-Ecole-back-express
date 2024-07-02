@@ -23,7 +23,7 @@ const getNiveauById = (req, res) => {
 // Create new niveau
 const createNiveau = (req, res) => {
     const { ID_Classe, Niveau } = req.body;
-    const sql = 'INSERT INTO niveau ( ID_Classe, Niveau) VALUES ( ?, ?)';
+    const sql = 'INSERT INTO niveau (ID_Classe, Niveau, created_at, updated_at) VALUES (?, ?, NOW(), NOW())';
     connection.query(sql, [ID_Classe, Niveau], (err, result) => {
         if (err) return res.status(500).send(err.toString());
         res.send('Niveau created successfully!');
@@ -34,7 +34,7 @@ const createNiveau = (req, res) => {
 const updateNiveauById = (req, res) => {
     const { id } = req.params;
     const { ID_Classe, Niveau } = req.body;
-    const sql = 'UPDATE niveau SET ID_Classe = ?, Niveau = ? WHERE ID_Niveau = ?';
+    const sql = 'UPDATE niveau SET ID_Classe = ?, Niveau = ?, updated_at = NOW() WHERE ID_Niveau = ?';
     connection.query(sql, [ID_Classe, Niveau, id], (err, result) => {
         if (err) return res.status(500).send(err.toString());
         if (result.affectedRows === 0) return res.status(404).send('Niveau not found');

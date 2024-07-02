@@ -22,9 +22,9 @@ const getPaiementEtudiantsById = (req, res) => {
 
 // Create new paiementetudiants
 const createPaiementEtudiants = (req, res) => {
-    const {  ID_Inscription, ID_TypePaiement, DatePaiementEtudiants, Montant } = req.body;
-    const sql = 'INSERT INTO paiementetudiants ( ID_Inscription, ID_TypePaiement, DatePaiementEtudiants, Montant) VALUES ( ?, ?, ?, ?)';
-    connection.query(sql, [ ID_Inscription, ID_TypePaiement, DatePaiementEtudiants, Montant], (err, result) => {
+    const { ID_Inscription, ID_TypePaiement, DatePaiementEtudiants, Montant } = req.body;
+    const sql = 'INSERT INTO paiementetudiants (ID_Inscription, ID_TypePaiement, DatePaiementEtudiants, Montant, created_at, updated_at) VALUES (?, ?, ?, ?, NOW(), NOW())';
+    connection.query(sql, [ID_Inscription, ID_TypePaiement, DatePaiementEtudiants, Montant], (err, result) => {
         if (err) return res.status(500).send(err.toString());
         res.send('PaiementEtudiants created successfully!');
     });
@@ -34,7 +34,7 @@ const createPaiementEtudiants = (req, res) => {
 const updatePaiementEtudiantsById = (req, res) => {
     const { id } = req.params;
     const { ID_Inscription, ID_TypePaiement, DatePaiementEtudiants, Montant } = req.body;
-    const sql = 'UPDATE paiementetudiants SET ID_Inscription = ?, ID_TypePaiement = ?, DatePaiementEtudiants = ?, Montant = ? WHERE ID_PaiementEtudiants = ?';
+    const sql = 'UPDATE paiementetudiants SET ID_Inscription = ?, ID_TypePaiement = ?, DatePaiementEtudiants = ?, Montant = ?, updated_at = NOW() WHERE ID_PaiementEtudiants = ?';
     connection.query(sql, [ID_Inscription, ID_TypePaiement, DatePaiementEtudiants, Montant, id], (err, result) => {
         if (err) return res.status(500).send(err.toString());
         if (result.affectedRows === 0) return res.status(404).send('PaiementEtudiants not found');

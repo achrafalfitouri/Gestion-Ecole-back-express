@@ -22,8 +22,8 @@ const getStageById = (req, res) => {
 
 // Create new stage
 const createStage = (req, res) => {
-    const {  ID_Etudiant, Entreprise, DateDebut, DateFin, Tuteur } = req.body;
-    const sql = 'INSERT INTO stages ( ID_Etudiant, Entreprise, DateDebut, DateFin, Tuteur) VALUES ( ?, ?, ?, ?, ?)';
+    const { ID_Etudiant, Entreprise, DateDebut, DateFin, Tuteur } = req.body;
+    const sql = 'INSERT INTO stages (ID_Etudiant, Entreprise, DateDebut, DateFin, Tuteur, created_at, updated_at) VALUES (?, ?, ?, ?, ?, NOW(), NOW())';
     connection.query(sql, [ID_Etudiant, Entreprise, DateDebut, DateFin, Tuteur], (err, result) => {
         if (err) return res.status(500).send(err.toString());
         res.send('Stage created successfully!');
@@ -34,7 +34,7 @@ const createStage = (req, res) => {
 const updateStageById = (req, res) => {
     const { id } = req.params;
     const { ID_Etudiant, Entreprise, DateDebut, DateFin, Tuteur } = req.body;
-    const sql = 'UPDATE stages SET ID_Etudiant = ?, Entreprise = ?, DateDebut = ?, DateFin = ?, Tuteur = ? WHERE ID_Stage = ?';
+    const sql = 'UPDATE stages SET ID_Etudiant = ?, Entreprise = ?, DateDebut = ?, DateFin = ?, Tuteur = ?, updated_at = NOW() WHERE ID_Stage = ?';
     connection.query(sql, [ID_Etudiant, Entreprise, DateDebut, DateFin, Tuteur, id], (err, result) => {
         if (err) return res.status(500).send(err.toString());
         if (result.affectedRows === 0) return res.status(404).send('Stage not found');

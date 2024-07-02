@@ -22,9 +22,9 @@ const getFournisseurById = (req, res) => {
 
 // Create new fournisseur
 const createFournisseur = (req, res) => {
-    const {  NomFournisseur, Adresse, Tel, Email } = req.body;
-    const sql = 'INSERT INTO fournisseurs ( NomFournisseur, Adresse, Tel, Email) VALUES (?, ?, ?, ?)';
-    connection.query(sql, [id, NomFournisseur, Adresse, Tel, Email], (err, result) => {
+    const { NomFournisseur, Adresse, Tel, Email } = req.body;
+    const sql = 'INSERT INTO fournisseurs (NomFournisseur, Adresse, Tel, Email, created_at, updated_at) VALUES (?, ?, ?, ?, NOW(), NOW())';
+    connection.query(sql, [NomFournisseur, Adresse, Tel, Email], (err, result) => {
         if (err) return res.status(500).send(err.toString());
         res.send('Fournisseur created successfully!');
     });
@@ -33,8 +33,8 @@ const createFournisseur = (req, res) => {
 // Update fournisseur by ID
 const updateFournisseurById = (req, res) => {
     const { id } = req.params;
-    const { ID_Fournisseur, NomFournisseur, Adresse, Tel, Email } = req.body;
-    const sql = 'UPDATE fournisseurs SET NomFournisseur = ?, Adresse = ?, Tel = ?, Email = ? WHERE ID_Fournisseur = ?';
+    const { NomFournisseur, Adresse, Tel, Email } = req.body;
+    const sql = 'UPDATE fournisseurs SET NomFournisseur = ?, Adresse = ?, Tel = ?, Email = ?, updated_at = NOW() WHERE ID_Fournisseur = ?';
     connection.query(sql, [NomFournisseur, Adresse, Tel, Email, id], (err, result) => {
         if (err) return res.status(500).send(err.toString());
         if (result.affectedRows === 0) return res.status(404).send('Fournisseur not found');

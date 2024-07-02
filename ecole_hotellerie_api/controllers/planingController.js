@@ -23,7 +23,7 @@ const getPlanningById = (req, res) => {
 // Create new planning
 const createPlanning = (req, res) => {
     const { ID_Classe, ID_Matiere, Jour, HeureDebut, HeureFin } = req.body;
-    const sql = 'INSERT INTO planning (ID_Classe, ID_Matiere, Jour, HeureDebut, HeureFin) VALUES (?, ?, ?, ?, ?)';
+    const sql = 'INSERT INTO planning (ID_Classe, ID_Matiere, Jour, HeureDebut, HeureFin, created_at, updated_at) VALUES (?, ?, ?, ?, ?, NOW(), NOW())';
     connection.query(sql, [ID_Classe, ID_Matiere, Jour, HeureDebut, HeureFin], (err, result) => {
         if (err) return res.status(500).send(err.toString());
         res.send('Planning created successfully!');
@@ -34,7 +34,7 @@ const createPlanning = (req, res) => {
 const updatePlanningById = (req, res) => {
     const { id } = req.params;
     const { ID_Classe, ID_Matiere, Jour, HeureDebut, HeureFin } = req.body;
-    const sql = 'UPDATE planning SET ID_Classe = ?, ID_Matiere = ?, Jour = ?, HeureDebut = ?, HeureFin = ? WHERE ID_Planning = ?';
+    const sql = 'UPDATE planning SET ID_Classe = ?, ID_Matiere = ?, Jour = ?, HeureDebut = ?, HeureFin = ?, updated_at = NOW() WHERE ID_Planning = ?';
     connection.query(sql, [ID_Classe, ID_Matiere, Jour, HeureDebut, HeureFin, id], (err, result) => {
         if (err) return res.status(500).send(err.toString());
         if (result.affectedRows === 0) return res.status(404).send('Planning not found');

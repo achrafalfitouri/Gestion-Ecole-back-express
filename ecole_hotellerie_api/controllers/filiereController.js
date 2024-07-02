@@ -22,9 +22,9 @@ const getFiliereById = (req, res) => {
 
 // Create new filiere
 const createFiliere = (req, res) => {
-    const {  NomFiliere } = req.body;
-    const sql = 'INSERT INTO filiere ( NomFiliere) VALUES ( ?)';
-    connection.query(sql, [ id,NomFiliere], (err, result) => {
+    const { NomFiliere } = req.body;
+    const sql = 'INSERT INTO filiere (NomFiliere, created_at, updated_at) VALUES (?, NOW(), NOW())';
+    connection.query(sql, [NomFiliere], (err, result) => {
         if (err) return res.status(500).send(err.toString());
         res.send('Filiere created successfully!');
     });
@@ -34,7 +34,7 @@ const createFiliere = (req, res) => {
 const updateFiliereById = (req, res) => {
     const { id } = req.params;
     const { NomFiliere } = req.body;
-    const sql = 'UPDATE filiere SET NomFiliere = ? WHERE ID_Filiere = ?';
+    const sql = 'UPDATE filiere SET NomFiliere = ?, updated_at = NOW() WHERE ID_Filiere = ?';
     connection.query(sql, [NomFiliere, id], (err, result) => {
         if (err) return res.status(500).send(err.toString());
         if (result.affectedRows === 0) return res.status(404).send('Filiere not found');
