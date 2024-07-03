@@ -2,7 +2,7 @@ const connection = require('../config/db');
 
 // Get all rendezvous
 const getAllRendezvous = (req, res) => {
-    const sql = 'SELECT * FROM rendezvous';
+    const sql = 'SELECT * FROM rendezvous ORDER BY created_at DESC';
     connection.query(sql, (err, results) => {
         if (err) return res.status(500).send(err.toString());
         res.send(results);

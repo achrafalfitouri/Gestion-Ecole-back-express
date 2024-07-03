@@ -2,7 +2,7 @@ const connection = require('../config/db');
 
 // Get all evaluations stage
 const getAllevaluationsstage = (req, res) => {
-    const sql = 'SELECT * FROM evaluationsstage';
+    const sql = 'SELECT * FROM evaluationsstage ORDER BY created_at DESC';
     connection.query(sql, (err, results) => {
         if (err) return res.status(500).send(err.toString());
         res.send(results);

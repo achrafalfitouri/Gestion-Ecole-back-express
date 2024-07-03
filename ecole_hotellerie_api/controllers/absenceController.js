@@ -2,7 +2,7 @@ const connection = require('../config/db');
 
 // Get all absence
 const getAllAbsence = (req, res) => {
-    const sql = 'SELECT * FROM absence';
+    const sql = 'SELECT * FROM absence ORDER BY created_at DESC';
     connection.query(sql, (err, results) => {
         if (err) return res.status(500).send(err.toString());
         res.send(results);

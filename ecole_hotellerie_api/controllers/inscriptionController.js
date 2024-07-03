@@ -2,7 +2,7 @@ const connection = require('../config/db');
 
 // Get all inscriptions
 const getAllInscriptions = (req, res) => {
-    const sql = 'SELECT * FROM inscriptions';
+    const sql = 'SELECT * FROM inscriptions ORDER BY created_at DESC';
     connection.query(sql, (err, results) => {
         if (err) return res.status(500).send(err.toString());
         res.send(results);

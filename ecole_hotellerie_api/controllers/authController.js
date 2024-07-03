@@ -33,9 +33,29 @@ const login = (req, res) => {
         if (!validPass) return res.status(400).send('Invalid password');
 
         const token = jwt.sign({ id: user.ID_Utilisateur, role: user.ID_Role }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+        // Calculate the expiration time
+
         res.header('Authorization', token).json({ token });
     });
 };
+
+
+const refreshToken = (req, res) => {
+    const oldToken = req.headers['authorization'];
+    if (!oldToken) return res.status(401).send('Access Denied');
+
+    jwt.verify(oldToken, process.env.JWT_SECRET, (err, user) => {
+        if (err) return res.status(403).send('Invalid token');
+
+        const newToken = jwt.sign({ id: user.ID_Utilisateur, role: user.ID_Role }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+        res.json({ token: newToken });
+    });
+};
+
+
+
 
 const getAuthenticatedUser = (req, res) => {
     const userId = req.user.id;
@@ -48,4 +68,4 @@ const getAuthenticatedUser = (req, res) => {
     });
 };
 
-module.exports = { register, login, getAuthenticatedUser };
+module.exports = { register, login, getAuthenticatedUser, refreshToken };

@@ -2,7 +2,7 @@ const connection = require('../config/db');
 
 // Get all students
 const getAllEtudiants = (req, res) => {
-    const sql = 'SELECT * FROM Etudiants';
+    const sql = 'SELECT * FROM Etudiants ORDER BY created_at DESC';
     connection.query(sql, (err, results) => {
         if (err) return res.status(500).send(err.toString());
         res.send(results);

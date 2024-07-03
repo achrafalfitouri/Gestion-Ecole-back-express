@@ -2,7 +2,7 @@ const connection = require('../config/db');
 
 // Get all school years
 const getAllAnneeScolaire = (req, res) => {
-    const sql = 'SELECT * FROM anneescolaire';
+    const sql = 'SELECT * FROM anneescolaire ORDER BY created_at DESC';
     connection.query(sql, (err, results) => {
         if (err) return res.status(500).send(err.toString());
         res.send(results);
