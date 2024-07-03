@@ -37,11 +37,11 @@ const getUtilisateurById = (req, res) => {
 
 // Create new utilisateur
 const createUtilisateur = async (req, res) => {
-    const { NomUtilisateur, PrenomUtilisateur, Email, MotDePasse, ID_Role } = req.body;
+    const { NomUtilisateur, PrenomUtilisateur, Email, MotDePasse, ID_Role,created_at, updated_at } = req.body;
     try {
         const hashedPassword = await bcrypt.hash(MotDePasse, 10);
-        const sql = 'INSERT INTO utilisateurs (NomUtilisateur, PrenomUtilisateur, Email, MotDePasse, ID_Role) VALUES (?, ?, ?, ?, ?)';
-        connection.query(sql, [NomUtilisateur, PrenomUtilisateur, Email, hashedPassword, ID_Role], (err, result) => {
+        const sql = 'INSERT INTO utilisateurs (NomUtilisateur, PrenomUtilisateur, Email, MotDePasse, ID_Role,created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)';
+        connection.query(sql, [NomUtilisateur, PrenomUtilisateur, Email, hashedPassword, ID_Role,created_at, updated_at], (err, result) => {
             if (err) {
                 console.error('Error creating utilisateur:', err);
                 return res.status(500).send('Internal Server Error');
@@ -58,9 +58,16 @@ const createUtilisateur = async (req, res) => {
 const updateUtilisateurById = async (req, res) => {
     const { id } = req.params;
     const { NomUtilisateur, PrenomUtilisateur, Email, MotDePasse, ID_Role } = req.body;
+    
+    console.log('Updating utilisateur with ID:', id);
+    console.log('New utilisateur data:', req.body);
+
     try {
         const hashedPassword = await bcrypt.hash(MotDePasse, 10);
-        const sql = 'UPDATE utilisateurs SET NomUtilisateur = ?, PrenomUtilisateur = ?, Email = ?, MotDePasse = ?, ID_Role = ? WHERE ID_Utilisateur = ?';
+        const sql = 'UPDATE utilisateurs SET NomUtilisateur = ?, PrenomUtilisateur = ?, Email = ?, MotDePasse = ?, ID_Role = ?, updated_at = NOW() WHERE ID_Utilisateur = ?';
+        
+        console.log('SQL Query:', sql);
+        
         connection.query(sql, [NomUtilisateur, PrenomUtilisateur, Email, hashedPassword, ID_Role, id], (err, result) => {
             if (err) {
                 console.error(`Error updating utilisateur with ID ${id}:`, err);
