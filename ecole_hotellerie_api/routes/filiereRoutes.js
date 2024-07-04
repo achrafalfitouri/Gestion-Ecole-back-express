@@ -6,7 +6,6 @@ const { getAllFiliere,getFiliereById,createFiliere,updateFiliereById,deleteFilie
 const authenticateJWT = require('../middleware/auth');
 
 router.get('/', authenticateJWT, getAllFiliere);
-router.get('/etud', authenticateJWT, getAllFiliereCountEtudiant);
 router.get('/:id', authenticateJWT, getFiliereById);
 router.post('/', authenticateJWT, createFiliere);
 router.put('/:id', authenticateJWT, updateFiliereById);

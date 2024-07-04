@@ -9,17 +9,7 @@ const getAllFiliere = (req, res) => {
     });
 };
 
-const getAllFiliereCountEtudiant = (req, res) => {
-    const sql = `SELECT f.NomFiliere, count(e.ID_Etudiant) as count 
-    FROM etudiants e
-    JOIN filiere f ON e.ID_Filiere = f.ID_Filiere 
-    GROUP BY f.NomFiliere 
-    ORDER BY f.created_at DESC;
-     `;    connection.query(sql, (err, results) => {
-        if (err) return res.status(500).send(err.toString());
-        res.send(results);
-    });
-};
+
 
 // Get filiere by ID
 const getFiliereById = (req, res) => {
@@ -71,5 +61,5 @@ module.exports = {
     createFiliere,
     updateFiliereById,
     deleteFiliereById,
-    getAllFiliereCountEtudiant
+    
 };
