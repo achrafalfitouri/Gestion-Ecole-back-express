@@ -32,15 +32,15 @@ const login = (req, res) => {
         const validPass = await bcrypt.compare(MotDePasse, user.MotDePasse);
         if (!validPass) return res.status(400).send('Invalid password');
 
-        const token = jwt.sign({ id: user.ID_Utilisateur, role: user.ID_Role }, process.env.JWT_SECRET, { expiresIn: '1h' });
-
-        // Calculate the expiration time
+        const token = jwt.sign(
+            { id: user.ID_Utilisateur, role: user.ID_Role },
+            process.env.JWT_SECRET,
+            { expiresIn: '4h' }
+        );
 
         res.header('Authorization', token).json({ token });
     });
 };
-
-
 const refreshToken = (req, res) => {
     const oldToken = req.headers['authorization'];
     if (!oldToken) return res.status(401).send('Access Denied');
@@ -48,7 +48,11 @@ const refreshToken = (req, res) => {
     jwt.verify(oldToken, process.env.JWT_SECRET, (err, user) => {
         if (err) return res.status(403).send('Invalid token');
 
-        const newToken = jwt.sign({ id: user.ID_Utilisateur, role: user.ID_Role }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        const newToken = jwt.sign(
+            { id: user.id, role: user.role },
+            process.env.JWT_SECRET,
+            { expiresIn: '4h' }
+        );
 
         res.json({ token: newToken });
     });
