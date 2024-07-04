@@ -2,7 +2,9 @@ const connection = require('../config/db');
 
 // Get all classes
 const getAllclasses = (req, res) => {
-    const sql = 'SELECT * FROM classes ORDER BY created_at DESC';
+    const sql = `SELECT c.ID_Classe,c.NomClasse,c.ID_Filiere,c.AnneeScolaire,c.Remarques,f.NomFiliere FROM classes c
+    Join filiere f on c.ID_Filiere=f.ID_Filiere
+     ORDER BY c.created_at DESC`;
     connection.query(sql, (err, results) => {
         if (err) return res.status(500).send(err.toString());
         res.send(results);
