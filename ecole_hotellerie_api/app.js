@@ -65,6 +65,23 @@ app.post('/api/etud/:id' ,upload.single('PhotoProfil'),(req,res)=>{
 })
 })
 
+app.get('/api/etud/photo/:id', (req, res) => {
+    const { id } = req.params;
+    const sql = "SELECT PhotoProfil FROM etudiants WHERE ID_Etudiant = ?";
+    connection.query(sql, [id], (err, result) => {
+        if (err) {
+            console.error("Error retrieving photo profile:", err);
+            return res.status(500).json({ error: "Error retrieving photo profile" });
+        }
+        if (result.length === 0) {
+            return res.status(404).json({ error: "Student not found" });
+        }
+        const photoPath = result[0].PhotoProfil;
+        // Assuming the photos are stored in the 'upload/images' directory
+        const photoFullPath = path.join(__dirname, 'upload/images', photoPath);
+        return res.sendFile(photoFullPath);
+    });
+});
 
 
 
