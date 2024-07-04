@@ -40,7 +40,7 @@ const createUtilisateur = async (req, res) => {
     const { NomUtilisateur, PrenomUtilisateur, Email, MotDePasse, ID_Role,created_at, updated_at } = req.body;
     try {
         const hashedPassword = await bcrypt.hash(MotDePasse, 10);
-        const sql = 'INSERT INTO utilisateurs (NomUtilisateur, PrenomUtilisateur, Email, MotDePasse, ID_Role,created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)';
+        const sql = 'INSERT INTO utilisateurs (NomUtilisateur, PrenomUtilisateur, Email, MotDePasse, ID_Role,created_at, updated_at) VALUES (?, ?, ?, ?, ?,  NOW(), NOW())';
         connection.query(sql, [NomUtilisateur, PrenomUtilisateur, Email, hashedPassword, ID_Role,created_at, updated_at], (err, result) => {
             if (err) {
                 console.error('Error creating utilisateur:', err);
