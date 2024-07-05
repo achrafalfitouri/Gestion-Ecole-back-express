@@ -2,7 +2,12 @@ const connection = require('../config/db');
 
 // Get all matieres
 const getAllMatieres = (req, res) => {
-    const sql = 'SELECT * FROM matieres ORDER BY created_at DESC';
+    const sql = `SELECT m.ID_Matiere, m.NomMatiere, m.ID_Classe, m.ID_Formateur, c.NomClasse, f.NomFormateur 
+FROM matieres m
+JOIN classes c ON m.ID_Classe = c.ID_Classe
+JOIN formateurs f ON m.ID_Formateur = f.ID_Formateur
+ORDER BY m.created_at DESC;
+`;
     connection.query(sql, (err, results) => {
         if (err) return res.status(500).send(err.toString());
         res.send(results);

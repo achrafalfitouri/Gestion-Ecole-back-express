@@ -2,7 +2,9 @@ const connection = require('../config/db');
 
 // Get all niveaux
 const getAllNiveaux = (req, res) => {
-    const sql = 'SELECT * FROM niveau ORDER BY created_at DESC';
+    const sql = `SELECT n.ID_Niveau,n.ID_Classe,n.Niveau,c.NomClasse FROM niveau n
+    Join classes c on n.ID_Classe=c.ID_Classe
+    ORDER BY n.created_at DESC`;
     connection.query(sql, (err, results) => {
         if (err) return res.status(500).send(err.toString());
         res.send(results);
