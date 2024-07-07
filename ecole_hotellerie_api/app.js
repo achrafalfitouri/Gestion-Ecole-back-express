@@ -26,6 +26,8 @@ const utilisateursRoutes = require('./routes/utilisateursRoutes');  // Ensure th
 const paiementpersonnelRoutes = require('./routes/paiementpersonnelRoutes');  // Ensure this path is correct
 const planingRoutes = require('./routes/planingRoutes');  // Ensure this path is correct
 const rendezvousRoutes = require('./routes/rendezvousRoutes');  // Ensure this path is correct
+const jointureRoutes = require('./routes/jointureRoutes');  // Ensure this path is correct
+const salleRoutes = require('./routes/salleRoutes');  // Ensure this path is correct
 
 const authenticateJWT = require('./middleware/auth');  // Ensure this path is correct
 const multer = require('multer');
@@ -125,6 +127,8 @@ app.use('/api/typepaiement', typepaiementRoutes);
 app.use('/api/utilisateurs', utilisateursRoutes);
 app.use('/api/planing', planingRoutes);
 app.use('/api/rendezvous', rendezvousRoutes);
+app.use('/api/jointure', jointureRoutes);
+app.use('/api/salle', salleRoutes);
 
 
 const PORT = process.env.PORT || 3000;

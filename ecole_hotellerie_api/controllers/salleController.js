@@ -1,8 +1,8 @@
 const connection = require('../config/db');
 
 // Get all plannings
-const getAllPlannings = (req, res) => {
-    const sql = 'SELECT * FROM planning ORDER BY created_at DESC';
+const getAllSalles = (req, res) => {
+    const sql = 'SELECT * FROM ID_Salle ORDER BY created_at DESC';
     connection.query(sql, (err, results) => {
         if (err) return res.status(500).send(err.toString());
         res.send(results);
@@ -10,9 +10,9 @@ const getAllPlannings = (req, res) => {
 };
 
 // Get planning by ID
-const getPlanningById = (req, res) => {
+const getSalleById = (req, res) => {
     const { id } = req.params;
-    const sql = 'SELECT * FROM planning WHERE ID_Planning = ?';
+    const sql = 'SELECT * FROM Salle WHERE ID_Salle = ?';
     connection.query(sql, [id], (err, results) => {
         if (err) return res.status(500).send(err.toString());
         if (results.length === 0) return res.status(404).send('Planning not found');
@@ -21,21 +21,21 @@ const getPlanningById = (req, res) => {
 };
 
 // Create new planning
-const createPlanning = (req, res) => {
-    const { ID_Classe, ID_Matiere,ID_Salle, Jour, HeureDebut, HeureFin } = req.body;
-    const sql = 'INSERT INTO planning (ID_Classe, ID_Matiere, Jour,ID_Salle, HeureDebut, HeureFin, created_at, updated_at) VALUES (?,?, ?, ?, ?, ?, NOW(), NOW())';
-    connection.query(sql, [ID_Classe, ID_Matiere,ID_Salle, Jour, HeureDebut, HeureFin], (err, result) => {
+const createSalle = (req, res) => {
+    const { Nom, Capacite } = req.body;
+    const sql = 'INSERT INTO Salle (Nom, Capacite, created_at, updated_at) VALUES (?, ?, NOW(), NOW())';
+    connection.query(sql, [Nom, Capacite], (err, result) => {
         if (err) return res.status(500).send(err.toString());
         res.send('Planning created successfully!');
     });
 };
 
 // Update planning by ID
-const updatePlanningById = (req, res) => {
+const updateSalleById = (req, res) => {
     const { id } = req.params;
-    const { ID_Classe, ID_Matiere,ID_Salle, Jour, HeureDebut, HeureFin } = req.body;
-    const sql = 'UPDATE planning SET ID_Classe = ?, ID_Matiere = ?, Jour = ?,ID_Salle=?, HeureDebut = ?, HeureFin = ?, updated_at = NOW() WHERE ID_Planning = ?';
-    connection.query(sql, [ID_Classe, ID_Matiere,ID_Salle, Jour, HeureDebut, HeureFin, id], (err, result) => {
+    const { Nom, Capacite } = req.body;
+    const sql = 'UPDATE Salle SET Nom= ?, Capacite = ?, updated_at = NOW() WHERE ID_Salle = ?';
+    connection.query(sql, [Nom, Capacite, id], (err, result) => {
         if (err) return res.status(500).send(err.toString());
         if (result.affectedRows === 0) return res.status(404).send('Planning not found');
         res.send('Planning updated successfully!');
@@ -43,9 +43,9 @@ const updatePlanningById = (req, res) => {
 };
 
 // Delete planning by ID
-const deletePlanningById = (req, res) => {
+const deleteSalleById = (req, res) => {
     const { id } = req.params;
-    const sql = 'DELETE FROM planning WHERE ID_Planning = ?';
+    const sql = 'DELETE FROM Salle WHERE ID_Salle = ?';
     connection.query(sql, [id], (err, result) => {
         if (err) return res.status(500).send(err.toString());
         if (result.affectedRows === 0) return res.status(404).send('Planning not found');
@@ -54,9 +54,9 @@ const deletePlanningById = (req, res) => {
 };
 
 module.exports = {
-    getAllPlannings,
-    getPlanningById,
-    createPlanning,
-    updatePlanningById,
-    deletePlanningById
+    getAllSalles,
+    getSalleById,
+    createSalle,
+    updateSalleById,
+    deleteSalleById
 };
