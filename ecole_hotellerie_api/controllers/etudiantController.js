@@ -19,6 +19,8 @@ const getAllEtudiants = (req, res) => {
             e.NumEtudiant, 
             e.PrenomEtudiant, 
             e.NomEtudiant, 
+            e.CIN,
+            e.Email,
             e.Sexe, 
             e.DateNaissance, 
             e.LieuNaissance, 
@@ -56,20 +58,20 @@ const getEtudiantById = (req, res) => {
 
 // Create new student with photo upload
 const createEtudiant = (req, res) => {
-    const { NumEtudiant, PrenomEtudiant, NomEtudiant, Sexe, DateNaissance, LieuNaissance, Adresse, Tel, Nationalite, ID_Filiere } = req.body;
+    const { NumEtudiant, PrenomEtudiant, NomEtudiant,CIN,Email, Sexe, DateNaissance, LieuNaissance, Adresse, Tel, Nationalite, ID_Filiere } = req.body;
     const PhotoProfil = req.file ? req.file.filename : null;
 
     if (PhotoProfil) {    
             
-    let sql = 'INSERT INTO Etudiants (NumEtudiant, PrenomEtudiant, NomEtudiant, Sexe, DateNaissance, LieuNaissance, Adresse, Tel, Nationalite, ID_Filiere, PhotoProfil, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())';  
-        connection.query(sql, [NumEtudiant, PrenomEtudiant, NomEtudiant, Sexe, DateNaissance, LieuNaissance, Adresse, Tel, Nationalite, ID_Filiere, PhotoProfil], (err, result) => {
+    let sql = 'INSERT INTO Etudiants (NumEtudiant, PrenomEtudiant, NomEtudiant,CIN,Email, Sexe, DateNaissance, LieuNaissance, Adresse, Tel, Nationalite, ID_Filiere, PhotoProfil, created_at, updated_at) VALUES (?,?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())';  
+        connection.query(sql, [NumEtudiant, PrenomEtudiant, NomEtudiant,CIN,Email, Sexe, DateNaissance, LieuNaissance, Adresse, Tel, Nationalite, ID_Filiere, PhotoProfil], (err, result) => {
             if (err) return res.status(500).send(err.toString());
             res.send('Student created successfully!');
         });
       }
-    else {    let sql = 'INSERT INTO Etudiants (NumEtudiant, PrenomEtudiant, NomEtudiant, Sexe, DateNaissance, LieuNaissance, Adresse, Tel, Nationalite, ID_Filiere, created_at, updated_at) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())';
+    else {    let sql = 'INSERT INTO Etudiants (NumEtudiant, PrenomEtudiant, NomEtudiant,CIN,Email, Sexe, DateNaissance, LieuNaissance, Adresse, Tel, Nationalite, ID_Filiere, created_at, updated_at) VALUES ( ?,?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())';
    
-        connection.query(sql, [NumEtudiant, PrenomEtudiant, NomEtudiant, Sexe, DateNaissance, LieuNaissance, Adresse, Tel, Nationalite, ID_Filiere], (err, result) => {
+        connection.query(sql, [NumEtudiant, PrenomEtudiant, NomEtudiant,CIN,Email, Sexe, DateNaissance, LieuNaissance, Adresse, Tel, Nationalite, ID_Filiere], (err, result) => {
             if (err) return res.status(500).send(err.toString());
             res.send('Student created successfully!');
         });
@@ -83,23 +85,23 @@ const createEtudiant = (req, res) => {
 // Update student by ID with photo upload
 const updateEtudiantById = (req, res) => {
     const { id } = req.params;
-    const { NumEtudiant, PrenomEtudiant, NomEtudiant, Sexe, DateNaissance, LieuNaissance, Adresse, Tel, Nationalite, ID_Filiere } = req.body;
+    const { NumEtudiant, PrenomEtudiant, NomEtudiant,CIN,Email, Sexe, DateNaissance, LieuNaissance, Adresse, Tel, Nationalite, ID_Filiere } = req.body;
     const PhotoProfil = req.file ? req.file.filename : null;
 
     let sql;
     let params;
 
     if (PhotoProfil) {
-        sql = 'UPDATE Etudiants SET NumEtudiant = ?, PrenomEtudiant = ?, NomEtudiant = ?, Sexe = ?, DateNaissance = ?, LieuNaissance = ?, Adresse = ?, Tel = ?, Nationalite = ?, ID_Filiere = ?, PhotoProfil = ?, updated_at = NOW() WHERE ID_Etudiant = ?';
-        params = [NumEtudiant, PrenomEtudiant, NomEtudiant, Sexe, DateNaissance, LieuNaissance, Adresse, Tel, Nationalite, ID_Filiere, PhotoProfil, id];
+        sql = 'UPDATE Etudiants SET NumEtudiant = ?, PrenomEtudiant = ?, NomEtudiant = ?,CIN= ?,Email= ?, Sexe = ?, DateNaissance = ?, LieuNaissance = ?, Adresse = ?, Tel = ?, Nationalite = ?, ID_Filiere = ?, PhotoProfil = ?, updated_at = NOW() WHERE ID_Etudiant = ?';
+        params = [NumEtudiant, PrenomEtudiant, NomEtudiant,CIN,Email, Sexe, DateNaissance, LieuNaissance, Adresse, Tel, Nationalite, ID_Filiere, PhotoProfil, id];
         connection.query(sql, params, (err, result) => {
             if (err) return res.status(500).send(err.toString());
             if (result.affectedRows === 0) return res.status(404).send('Student not found');
             res.send('Student updated successfully!');
         });
     } else {
-        sql = 'UPDATE Etudiants SET NumEtudiant = ?, PrenomEtudiant = ?, NomEtudiant = ?, Sexe = ?, DateNaissance = ?, LieuNaissance = ?, Adresse = ?, Tel = ?, Nationalite = ?, ID_Filiere = ?, updated_at = NOW() WHERE ID_Etudiant = ?';
-        params = [NumEtudiant, PrenomEtudiant, NomEtudiant, Sexe, DateNaissance, LieuNaissance, Adresse, Tel, Nationalite, ID_Filiere, id];
+        sql = 'UPDATE Etudiants SET NumEtudiant = ?, PrenomEtudiant = ?, NomEtudiant = ?,CIN= ?,Email= ?, Sexe = ?, DateNaissance = ?, LieuNaissance = ?, Adresse = ?, Tel = ?, Nationalite = ?, ID_Filiere = ?, updated_at = NOW() WHERE ID_Etudiant = ?';
+        params = [NumEtudiant, PrenomEtudiant, NomEtudiant,CIN,Email, Sexe, DateNaissance, LieuNaissance, Adresse, Tel, Nationalite, ID_Filiere, id];
         connection.query(sql, params, (err, result) => {
             if (err) return res.status(500).send(err.toString());
             if (result.affectedRows === 0) return res.status(404).send('Student not found');

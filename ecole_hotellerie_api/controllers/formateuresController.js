@@ -19,7 +19,10 @@ const getAllFormateurs = (req, res) => {
             f.ID_Formateur, 
             f.NomFormateur, 
             f.PrenomFormateur, 
+            f.CIN,
+            f.Email,
             f.Titre, 
+            f.Diplome
             f.EtatFormateur, 
             f.Adresse, 
             f.Tel, 
@@ -55,18 +58,18 @@ const getFormateurById = (req, res) => {
 
 // Create new formateur with photo upload
 const createFormateur = (req, res) => {
-    const { NomFormateur, PrenomFormateur, Titre, EtatFormateur, Adresse, Tel, ID_Filiere } = req.body;
+    const { NomFormateur, PrenomFormateur,CIN,Email, Titre,Diplome, EtatFormateur, Adresse, Tel, ID_Filiere } = req.body;
     const PhotoProfil = req.file ? req.file.filename : null;
 
     if (PhotoProfil) {
-        let sql = 'INSERT INTO formateurs (NomFormateur, PrenomFormateur, Titre, EtatFormateur, Adresse, Tel, ID_Filiere, PhotoProfil, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())';
-        connection.query(sql, [NomFormateur, PrenomFormateur, Titre, EtatFormateur, Adresse, Tel, ID_Filiere, PhotoProfil], (err, result) => {
+        let sql = 'INSERT INTO formateurs (NomFormateur, PrenomFormateur,CIN,Email, Titre,Diplome, EtatFormateur, Adresse, Tel, ID_Filiere, PhotoProfil, created_at, updated_at) VALUES (?,?,?,?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())';
+        connection.query(sql, [NomFormateur, PrenomFormateur, CIN,Email, Titre,Diplome, EtatFormateur, Adresse, Tel, ID_Filiere, PhotoProfil], (err, result) => {
             if (err) return res.status(500).send(err.toString());
             res.send('Formateur created successfully!');
         });
     } else {
-        let sql = 'INSERT INTO formateurs (NomFormateur, PrenomFormateur, Titre, EtatFormateur, Adresse, Tel, ID_Filiere, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, NOW(), NOW())';
-        connection.query(sql, [NomFormateur, PrenomFormateur, Titre, EtatFormateur, Adresse, Tel, ID_Filiere], (err, result) => {
+        let sql = 'INSERT INTO formateurs (NomFormateur, PrenomFormateur, CIN,Email, Titre,Diplome, EtatFormateur, Adresse, Tel, ID_Filiere, created_at, updated_at) VALUES (?,?,?,?, ?, ?, ?, ?, ?, ?, NOW(), NOW())';
+        connection.query(sql, [NomFormateur, PrenomFormateur, CIN,Email, Titre,Diplome, EtatFormateur, Adresse, Tel, ID_Filiere], (err, result) => {
             if (err) return res.status(500).send(err.toString());
             res.send('Formateur created successfully!');
         });
@@ -76,23 +79,23 @@ const createFormateur = (req, res) => {
 // Update formateur by ID with photo upload
 const updateFormateurById = (req, res) => {
     const { id } = req.params;
-    const { NomFormateur, PrenomFormateur, Titre, EtatFormateur, Adresse, Tel, ID_Filiere } = req.body;
+    const { NomFormateur, PrenomFormateur, CIN,Email, Titre,Diplome, EtatFormateur, Adresse, Tel, ID_Filiere } = req.body;
     const PhotoProfil = req.file ? req.file.filename : null;
 
     let sql;
     let params;
 
     if (PhotoProfil) {
-        sql = 'UPDATE formateurs SET NomFormateur = ?, PrenomFormateur = ?, Titre = ?, EtatFormateur = ?, Adresse = ?, Tel = ?, ID_Filiere = ?, PhotoProfil = ?, updated_at = NOW() WHERE ID_Formateur = ?';
-        params = [NomFormateur, PrenomFormateur, Titre, EtatFormateur, Adresse, Tel, ID_Filiere, PhotoProfil, id];
+        sql = 'UPDATE formateurs SET NomFormateur = ?, PrenomFormateur = ?, CIN= ?,Email= ?, Titre= ?,Diplome= ?, EtatFormateur = ?, Adresse = ?, Tel = ?, ID_Filiere = ?, PhotoProfil = ?, updated_at = NOW() WHERE ID_Formateur = ?';
+        params = [NomFormateur, PrenomFormateur, CIN,Email, Titre,Diplome, EtatFormateur, Adresse, Tel, ID_Filiere, PhotoProfil, id];
         connection.query(sql, params, (err, result) => {
             if (err) return res.status(500).send(err.toString());
             if (result.affectedRows === 0) return res.status(404).send('Formateur not found');
             res.send('Formateur updated successfully!');
         });
     } else {
-        sql = 'UPDATE formateurs SET NomFormateur = ?, PrenomFormateur = ?, Titre = ?, EtatFormateur = ?, Adresse = ?, Tel = ?, ID_Filiere = ?, updated_at = NOW() WHERE ID_Formateur = ?';
-        params = [NomFormateur, PrenomFormateur, Titre, EtatFormateur, Adresse, Tel, ID_Filiere, id];
+        sql = 'UPDATE formateurs SET NomFormateur = ?, PrenomFormateur = ?,  CIN= ?,Email= ?, Titre= ?,Diplome= ?, EtatFormateur = ?, Adresse = ?, Tel = ?, ID_Filiere = ?, updated_at = NOW() WHERE ID_Formateur = ?';
+        params = [NomFormateur, PrenomFormateur, CIN,Email, Titre,Diplome, EtatFormateur, Adresse, Tel, ID_Filiere, id];
         connection.query(sql, params, (err, result) => {
             if (err) return res.status(500).send(err.toString());
             if (result.affectedRows === 0) return res.status(404).send('Formateur not found');
