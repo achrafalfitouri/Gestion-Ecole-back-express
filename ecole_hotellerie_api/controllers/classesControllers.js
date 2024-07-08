@@ -1,11 +1,10 @@
 const connection = require('../config/db');
 
 // Get all classes
+// Get all classes
 const getAllclasses = (req, res) => {
-    const sql = `SELECT c.ID_Classe,c.NomClasse,c.ID_Filiere,c.ID_AnneeScolaire,c.Remarques,f.NomFiliere,a.AnneeScolaire FROM classes c
-    Join filiere f on c.ID_Filiere=f.ID_Filiere
-    join anneeScolaire a on a.ID_AnneeScolaire=c.ID_AnneeScolaire
-     ORDER BY c.created_at DESC`;
+    const sql = `SELECT c.ID_Classe, c.NomClasse, c.ID_Filiere, c.ID_AnneeScolaire, c.Remarques, f.NomFiliere, a.AnneeScolaire, GROUP_CONCAT(CONCAT('(', e.NumEtudiant, ') ', e.NomEtudiant, ' ', e.PrenomEtudiant) ORDER BY e.NumEtudiant SEPARATOR '\n') AS NomComplet FROM classes c JOIN filiere f ON c.ID_Filiere = f.ID_Filiere JOIN anneeScolaire a ON a.ID_AnneeScolaire = c.ID_AnneeScolaire JOIN etudiants e ON c.ID_Classe = e.ID_Classe GROUP BY c.ID_Classe, c.NomClasse, c.ID_Filiere, c.ID_AnneeScolaire, c.Remarques, f.NomFiliere, a.AnneeScolaire ORDER BY c.created_at DESC;
+`;
     connection.query(sql, (err, results) => {
         if (err) return res.status(500).send(err.toString());
         res.send(results);

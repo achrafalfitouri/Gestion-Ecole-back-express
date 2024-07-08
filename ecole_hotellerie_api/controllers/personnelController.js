@@ -1,4 +1,5 @@
 const connection = require('../config/db');
+const path = require('path');
 const multer = require('multer');
 
 // Multer setup for file uploads
@@ -11,13 +12,15 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-
 // Get all personnel
 const getAllPersonnel = (req, res) => {
     const sql = 'SELECT * FROM personnel ORDER BY created_at DESC';
     connection.query(sql, (err, results) => {
-        if (err) return res.status(500).send(err.toString());
-        res.send(results);
+        if (err) {
+            console.error('Error executing query:', err);
+            return res.status(500).send('An error occurred while retrieving the data.');
+        }
+        res.status(200).json(results);
     });
 };
 
@@ -32,47 +35,50 @@ const getPersonnelById = (req, res) => {
     });
 };
 
-// Create new personnel
+// Create new personnel with photo upload
 const createPersonnel = (req, res) => {
-    const { EtatPersonnel, NomPersonnel, PrenomPersonnel, CIN,Email, Titre, Salaire,Contrat, DateEmbauche, DateNaissance } = req.body;
+    const { EtatPersonnel, NomPersonnel, PrenomPersonnel, CIN, Email, Titre, Salaire, Contrat, DateEmbauche, DateNaissance } = req.body;
     const PhotoProfil = req.file ? req.file.filename : null;
+
+    let sql;
+    let params;
+
     if (PhotoProfil) {
-    const sql = 'INSERT INTO personnel (EtatPersonnel, NomPersonnel, PrenomPersonnel,CIN,Email, Titre, Salaire,Contrat, DateEmbauche, DateNaissance,PhotoProfil, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, NOW(), NOW())';
-    connection.query(sql, [EtatPersonnel, NomPersonnel, PrenomPersonnel, CIN,Email, Titre, Salaire,Contrat, DateEmbauche, DateNaissance,PhotoProfil], (err, result) => {
+        sql = 'INSERT INTO personnel (EtatPersonnel, NomPersonnel, PrenomPersonnel, CIN, Email, Titre, Salaire, Contrat, DateEmbauche, DateNaissance, PhotoProfil, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())';
+        params = [EtatPersonnel, NomPersonnel, PrenomPersonnel, CIN, Email, Titre, Salaire, Contrat, DateEmbauche, DateNaissance, PhotoProfil];
+    } else {
+        sql = 'INSERT INTO personnel (EtatPersonnel, NomPersonnel, PrenomPersonnel, CIN, Email, Titre, Salaire, Contrat, DateEmbauche, DateNaissance, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())';
+        params = [EtatPersonnel, NomPersonnel, PrenomPersonnel, CIN, Email, Titre, Salaire, Contrat, DateEmbauche, DateNaissance];
+    }
+
+    connection.query(sql, params, (err, result) => {
         if (err) return res.status(500).send(err.toString());
         res.send('Personnel created successfully!');
-    });}
-    else {
-        const sql = 'INSERT INTO personnel (EtatPersonnel, NomPersonnel, PrenomPersonnel, CIN,Email, Titre, Salaire,Contrat, DateEmbauche, DateNaissance,PhotoProfil, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, NOW(), NOW())';
-        connection.query(sql, [EtatPersonnel, NomPersonnel, PrenomPersonnel, CIN,Email, Titre, Salaire,Contrat, DateEmbauche, DateNaissance,PhotoProfil], (err, result) => {
-            if (err) return res.status(500).send(err.toString());
-            res.send('Personnel created successfully!');
-        });
-    }
+    });
 };
 
-// Update personnel by ID
+// Update personnel by ID with photo upload
 const updatePersonnelById = (req, res) => {
     const { id } = req.params;
-    const { EtatPersonnel, NomPersonnel, PrenomPersonnel, CIN,Email, Titre, Salaire,Contrat, DateEmbauche, DateNaissance } = req.body;
+    const { EtatPersonnel, NomPersonnel, PrenomPersonnel, CIN, Email, Titre, Salaire, Contrat, DateEmbauche, DateNaissance } = req.body;
     const PhotoProfil = req.file ? req.file.filename : null;
 
+    let sql;
+    let params;
 
-    if(PhotoProfil){ const sql = 'UPDATE personnel SET EtatPersonnel = ?, NomPersonnel = ?, PrenomPersonnel = ?, CIN= ?,Email= ?, Titre= ?, Salaire= ?,Contrat= ?, DateEmbauche= ?, DateNaissance= ?, updated_at = NOW() WHERE ID_Personnel = ?';
-        connection.query(sql, [EtatPersonnel, NomPersonnel, PrenomPersonnel,CIN,Email, Titre, Salaire,Contrat, DateEmbauche, DateNaissance, id], (err, result) => {
-            if (err) return res.status(500).send(err.toString());
-            if (result.affectedRows === 0) return res.status(404).send('Personnel not found');
-            res.send('Personnel updated successfully!');
-        });}
-        else {
-            const sql = 'UPDATE personnel SET EtatPersonnel = ?, NomPersonnel = ?, PrenomPersonnel = ?, CIN= ?,Email= ?, Titre= ?, Salaire= ?,Contrat= ?, DateEmbauche= ?, DateNaissance= ?, updated_at = NOW() WHERE ID_Personnel = ?';
-            connection.query(sql, [EtatPersonnel, NomPersonnel, PrenomPersonnel, CIN,Email, Titre, Salaire,Contrat, DateEmbauche, DateNaissance, id], (err, result) => {
-                if (err) return res.status(500).send(err.toString());
-                if (result.affectedRows === 0) return res.status(404).send('Personnel not found');
-                res.send('Personnel updated successfully!');
-            }); 
-        }
-   
+    if (PhotoProfil) {
+        sql = 'UPDATE personnel SET EtatPersonnel = ?, NomPersonnel = ?, PrenomPersonnel = ?, CIN = ?, Email = ?, Titre = ?, Salaire = ?, Contrat = ?, DateEmbauche = ?, DateNaissance = ?, PhotoProfil = ?, updated_at = NOW() WHERE ID_Personnel = ?';
+        params = [EtatPersonnel, NomPersonnel, PrenomPersonnel, CIN, Email, Titre, Salaire, Contrat, DateEmbauche, DateNaissance, PhotoProfil, id];
+    } else {
+        sql = 'UPDATE personnel SET EtatPersonnel = ?, NomPersonnel = ?, PrenomPersonnel = ?, CIN = ?, Email = ?, Titre = ?, Salaire = ?, Contrat = ?, DateEmbauche = ?, DateNaissance = ?, updated_at = NOW() WHERE ID_Personnel = ?';
+        params = [EtatPersonnel, NomPersonnel, PrenomPersonnel, CIN, Email, Titre, Salaire, Contrat, DateEmbauche, DateNaissance, id];
+    }
+
+    connection.query(sql, params, (err, result) => {
+        if (err) return res.status(500).send(err.toString());
+        if (result.affectedRows === 0) return res.status(404).send('Personnel not found');
+        res.send('Personnel updated successfully!');
+    });
 };
 
 // Delete personnel by ID
@@ -91,5 +97,6 @@ module.exports = {
     getPersonnelById,
     createPersonnel,
     updatePersonnelById,
-    deletePersonnelById, upload
+    deletePersonnelById,
+    upload
 };

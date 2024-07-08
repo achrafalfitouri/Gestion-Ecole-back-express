@@ -78,12 +78,21 @@ app.get('/api/etud/photo/:id', (req, res) => {
         if (result.length === 0) {
             return res.status(404).json({ error: "Student not found" });
         }
+        
         const photoPath = result[0].PhotoProfil;
-        // Assuming the photos are stored in the 'upload/images' directory
+        if (!photoPath) {
+            return res.status(404).json({ error: "Photo not found for this student" });
+        }
+        
+        // Construct full path to the photo file
         const photoFullPath = path.join(__dirname, 'upload/images', photoPath);
+        
+        // Send the photo file
         return res.sendFile(photoFullPath);
     });
 });
+
+
 app.get('/api/form/photo/:id', (req, res) => {
     const { id } = req.params;
     const sql = "SELECT PhotoProfil FROM formateurs WHERE ID_Formateur = ?";
@@ -95,12 +104,51 @@ app.get('/api/form/photo/:id', (req, res) => {
         if (result.length === 0) {
             return res.status(404).json({ error: "Student not found" });
         }
+        
         const photoPath = result[0].PhotoProfil;
-        // Assuming the photos are stored in the 'upload/images' directory
+        if (!photoPath) {
+            return res.status(404).json({ error: "Photo not found for this student" });
+        }
+        
+        // Construct full path to the photo file
         const photoFullPath = path.join(__dirname, 'upload/images', photoPath);
+        
+        // Send the photo file
         return res.sendFile(photoFullPath);
     });
 });
+app.get('/api/pers/photo/:id', (req, res) => {
+    const { id } = req.params;
+    const sql = "SELECT PhotoProfil FROM personnel WHERE ID_Personnel = ?";
+    connection.query(sql, [id], (err, result) => {
+        if (err) {
+            console.error("Error retrieving photo profile:", err);
+            return res.status(500).json({ error: "Error retrieving photo profile" });
+        }
+        if (result.length === 0) {
+            return res.status(404).json({ error: "Student not found" });
+        }
+        
+        const photoPath = result[0].PhotoProfil;
+        if (!photoPath) {
+            return res.status(404).json({ error: "Photo not found for this student" });
+        }
+        
+        // Construct full path to the photo file
+        const photoFullPath = path.join(__dirname, 'upload/images', photoPath);
+        
+        // Send the photo file
+        return res.sendFile(photoFullPath);
+    });
+});
+
+
+
+
+
+
+
+
 
 
 
