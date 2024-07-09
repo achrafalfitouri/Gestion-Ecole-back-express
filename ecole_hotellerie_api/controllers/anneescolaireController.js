@@ -22,9 +22,9 @@ const getAnneeScolaireById = (req, res) => {
 
 // Create new school year
 const createAnneeScolaire = (req, res) => {
-    const { ID_AnneeScolaire, AnneeScolaire,DateDebut,DateFin } = req.body;
-    const sql = 'INSERT INTO anneescolaire (ID_AnneeScolaire, AnneeScolaire,DateDebut,DateFin created_at, updated_at) VALUES (?,?,?, ?, NOW(), NOW())';
-    connection.query(sql, [ID_AnneeScolaire, AnneeScolaire,DateDebut,DateFin], (err, result) => {
+    const {  AnneeScolaire,DateDebut,DateFin } = req.body;
+    const sql = 'INSERT INTO anneescolaire ( AnneeScolaire,DateDebut,DateFin ,created_at, updated_at) VALUES (?,?, ?, NOW(), NOW())';
+    connection.query(sql, [ AnneeScolaire,DateDebut,DateFin], (err, result) => {
         if (err) return res.status(500).send(err.toString());
         res.send('School year created successfully!');
     });
@@ -34,7 +34,7 @@ const createAnneeScolaire = (req, res) => {
 const updateAnneeScolaireById = (req, res) => {
     const { id } = req.params;
     const { AnneeScolaire,DateDebut,DateFin } = req.body;
-    const sql = 'UPDATE anneescolaire SET AnneeScolaire = ?,,DateDebut= ?,DateFin= ? updated_at = NOW() WHERE ID_AnneeScolaire = ?';
+    const sql = 'UPDATE anneescolaire SET AnneeScolaire = ?,DateDebut= ?,DateFin= ? ,updated_at = NOW() WHERE ID_AnneeScolaire = ?';
     connection.query(sql, [AnneeScolaire,,DateDebut,DateFin, id], (err, result) => {
         if (err) return res.status(500).send(err.toString());
         if (result.affectedRows === 0) return res.status(404).send('School year not found');

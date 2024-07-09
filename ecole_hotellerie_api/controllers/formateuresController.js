@@ -22,7 +22,7 @@ const getAllFormateurs = (req, res) => {
             f.CIN,
             f.Email,
             f.Titre, 
-            f.Diplome
+            f.Diplome,
             f.EtatFormateur, 
             f.Adresse, 
             f.Tel, 
