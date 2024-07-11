@@ -23,7 +23,7 @@ const getTypePaiementById = (req, res) => {
 // Create new typepaiement
 const createTypePaiement = (req, res) => {
     const { TypePaiement ,created_at, updated_at} = req.body;
-    const sql = 'INSERT INTO typepaiement (TypePaiement,created_at, updated_at) VALUES (?,?,?)';
+    const sql = 'INSERT INTO typepaiement (TypePaiement,created_at, updated_at) VALUES (?,NOW(), NOW())';
     connection.query(sql, [TypePaiement,created_at, updated_at], (err, result) => {
         if (err) return res.status(500).send(err.toString());
         res.send('TypePaiement created successfully!');
@@ -33,9 +33,9 @@ const createTypePaiement = (req, res) => {
 // Update typepaiement by ID
 const updateTypePaiementById = (req, res) => {
     const { id } = req.params;
-    const { TypePaiement,created_at, updated_at } = req.body;
+    const { TypePaiement} = req.body;
     const sql = 'UPDATE typepaiement SET TypePaiement = ?, updated_at = NOW() WHERE ID_TypePaiement = ?';
-    connection.query(sql, [TypePaiement,created_at, updated_at, id], (err, result) => {
+    connection.query(sql, [TypePaiement,  id], (err, result) => {
         if (err) return res.status(500).send(err.toString());
         if (result.affectedRows === 0) return res.status(404).send('TypePaiement not found');
         res.send('TypePaiement updated successfully!');
