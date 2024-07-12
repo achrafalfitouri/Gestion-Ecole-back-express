@@ -22,9 +22,9 @@ const getPaiementPersonnelById = (req, res) => {
 
 // Create new paiementpersonnel
 const createPaiementPersonnel = (req, res) => {
-    const { ID_Personnel, ID_TypePaiement, DatePaiementPersonnel, Montant } = req.body;
-    const sql = 'INSERT INTO paiementpersonnel (ID_Personnel, ID_TypePaiement, DatePaiementPersonnel, Montant, created_at, updated_at) VALUES (?, ?, ?, ?, NOW(), NOW())';
-    connection.query(sql, [ID_Personnel, ID_TypePaiement, DatePaiementPersonnel, Montant], (err, result) => {
+    const { ID_Personnel, ID_TypePaiement, DatePaiementPersonnel, Montant,Reste,MontantTotal } = req.body;
+    const sql = 'INSERT INTO paiementpersonnel (ID_Personnel, ID_TypePaiement, DatePaiementPersonnel, Montant,Reste,MontantTotal ,created_at, updated_at) VALUES (?,?,?, ?, ?, ?, NOW(), NOW())';
+    connection.query(sql, [ID_Personnel, ID_TypePaiement, DatePaiementPersonnel, Montant,Reste,MontantTotal], (err, result) => {
         if (err) return res.status(500).send(err.toString());
         res.send('PaiementPersonnel created successfully!');
     });
@@ -33,9 +33,9 @@ const createPaiementPersonnel = (req, res) => {
 // Update paiementpersonnel by ID
 const updatePaiementPersonnelById = (req, res) => {
     const { id } = req.params;
-    const { ID_Personnel, ID_TypePaiement, DatePaiementPersonnel, Montant } = req.body;
-    const sql = 'UPDATE paiementpersonnel SET ID_Personnel = ?, ID_TypePaiement = ?, DatePaiementPersonnel = ?, Montant = ?, updated_at = NOW() WHERE ID_PaiementPersonnel = ?';
-    connection.query(sql, [ID_Personnel, ID_TypePaiement, DatePaiementPersonnel, Montant, id], (err, result) => {
+    const { ID_Personnel, ID_TypePaiement, DatePaiementPersonnel, Montant,Reste,MontantTotal } = req.body;
+    const sql = 'UPDATE paiementpersonnel SET ID_Personnel = ?, ID_TypePaiement = ?, DatePaiementPersonnel = ?, Montant = ?,Reste= ?,MontantTotal= ?, updated_at = NOW() WHERE ID_PaiementPersonnel = ?';
+    connection.query(sql, [ID_Personnel, ID_TypePaiement, DatePaiementPersonnel, Montant,Reste,MontantTotal, id], (err, result) => {
         if (err) return res.status(500).send(err.toString());
         if (result.affectedRows === 0) return res.status(404).send('PaiementPersonnel not found');
         res.send('PaiementPersonnel updated successfully!');
