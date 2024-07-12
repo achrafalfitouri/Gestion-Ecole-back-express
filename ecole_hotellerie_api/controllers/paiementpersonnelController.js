@@ -2,7 +2,10 @@ const connection = require('../config/db');
 
 // Get all paiementpersonnel
 const getAllPaiementPersonnel = (req, res) => {
-    const sql = 'SELECT * FROM paiementpersonnel ORDER BY created_at DESC';
+    const sql = `SELECT p.NomPersonnel, p.PrenomPersonnel, p.CIN, p.Email, p.Salaire, p.EtatPersonnel, t.TypePaiement, pp.DatePaiementPersonnel, pp.Montant, pp.Reste, pp.MontantTotal 
+    FROM paiementpersonnel pp JOIN Personnel p ON p.ID_Personnel = pp.ID_Personnel
+     JOIN typepaiement t ON t.ID_TypePaiement = pp.ID_TypePaiement 
+     ORDER BY pp.created_at;`;
     connection.query(sql, (err, results) => {
         if (err) return res.status(500).send(err.toString());
         res.send(results);
