@@ -2,7 +2,7 @@ const connection = require('../config/db');
 
 // Get all detailsfacture
 const getAlldetailsfacture = (req, res) => {
-    const sql = 'SELECT * FROM detailsfacture ORDER BY created_at DESC';
+    const sql = 'SELECT * FROM detailsfacture ORDER BY GREATEST(created_at, updated_at) DESC;';
     connection.query(sql, (err, results) => {
         if (err) return res.status(500).send(err.toString());
         res.send(results);

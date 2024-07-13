@@ -37,7 +37,7 @@ const getAllFormateurs = (req, res) => {
             f.updated_at 
         FROM formateurs f 
         JOIN filiere fil ON fil.ID_Filiere = f.ID_Filiere  
-        ORDER BY f.created_at DESC
+        ORDER BY GREATEST(f.created_at, f.updated_at) DESC;
     `;
 
     connection.query(sql, (err, results) => {

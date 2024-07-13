@@ -5,7 +5,7 @@ const getAllAbsence = (req, res) => {
     const sql = `SELECT a.ID_Absence, a.ID_Etudiant,a.ID_Classe,a.Nb_Heure, a.DateDebutAbsence, a.DateFinAbsence, e.NomEtudiant,e.PrenomEtudiant ,c.NomClasse
     FROM absence a JOIN etudiants e ON a.ID_Etudiant = e.ID_Etudiant
     JOIN classes c on a.ID_Classe=c.ID_Classe
-    ORDER BY a.created_at DESC;
+    ORDER BY GREATEST(a.created_at, a.updated_at) DESC;
 `;
     connection.query(sql, (err, results) => {
         if (err) return res.status(500).send(err.toString());

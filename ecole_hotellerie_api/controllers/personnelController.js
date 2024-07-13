@@ -14,7 +14,7 @@ const upload = multer({ storage: storage });
 
 // Get all personnel
 const getAllPersonnel = (req, res) => {
-    const sql = 'SELECT * FROM personnel ORDER BY created_at DESC';
+    const sql = 'SELECT * FROM personnel ORDER BY GREATEST(created_at, updated_at) DESC';
     connection.query(sql, (err, results) => {
         if (err) {
             console.error('Error executing query:', err);

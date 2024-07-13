@@ -32,8 +32,7 @@ const getAllEtudiants = (req, res) => {
             f.NomFiliere 
         FROM Etudiants e 
         JOIN Filiere f ON f.ID_Filiere = e.ID_Filiere  
-        ORDER BY e.created_at DESC
-    `;
+ORDER BY GREATEST(e.created_at, e.updated_at) DESC;    `;
 
     connection.query(sql, (err, results) => {
         if (err) {

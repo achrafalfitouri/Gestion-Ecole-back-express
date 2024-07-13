@@ -25,8 +25,7 @@ JOIN
     Personnel p ON p.ID_Personnel = pp.ID_Personnel
 JOIN 
     typepaiement t ON t.ID_TypePaiement = pp.ID_TypePaiement
-ORDER BY 
-    pp.created_at DESC, pp.updated_at DESC;
+ORDER BY GREATEST(pp.created_at, pp.updated_at) DESC;
 
      ;`;
     connection.query(sql, (err, results) => {

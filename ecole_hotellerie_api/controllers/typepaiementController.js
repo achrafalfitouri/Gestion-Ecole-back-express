@@ -2,7 +2,7 @@ const connection = require('../config/db');
 
 // Get all typepaiement
 const getAllTypePaiement = (req, res) => {
-    const sql = 'SELECT * FROM typepaiement ORDER BY created_at DESC';
+    const sql = 'SELECT * FROM typepaiement ORDER BY GREATEST(created_at, updated_at) DESC';
     connection.query(sql, (err, results) => {
         if (err) return res.status(500).send(err.toString());
         res.send(results);

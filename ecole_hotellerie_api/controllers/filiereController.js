@@ -2,7 +2,7 @@ const connection = require('../config/db');
 
 // Get all filiere
 const getAllFiliere = (req, res) => {
-    const sql = 'SELECT * FROM filiere ORDER BY created_at DESC';
+    const sql = 'SELECT * FROM filiere ORDER BY GREATEST(created_at, updated_at) DESC;';
     connection.query(sql, (err, results) => {
         if (err) return res.status(500).send(err.toString());
         res.send(results);

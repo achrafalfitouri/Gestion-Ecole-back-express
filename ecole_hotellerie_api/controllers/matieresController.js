@@ -6,7 +6,7 @@ const getAllMatieres = (req, res) => {
 FROM matieres m
 JOIN classes c ON m.ID_Classe = c.ID_Classe
 JOIN formateurs f ON m.ID_Formateur = f.ID_Formateur
-ORDER BY m.created_at DESC;
+ORDER BY GREATEST(m.created_at, m.updated_at) DESC;
 `;
     connection.query(sql, (err, results) => {
         if (err) return res.status(500).send(err.toString());

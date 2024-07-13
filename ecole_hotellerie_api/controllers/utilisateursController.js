@@ -7,7 +7,7 @@ const getAllUtilisateurs = (req, res) => {
         SELECT u.ID_Utilisateur, u.NomUtilisateur, u.PrenomUtilisateur, u.Email, u.ID_Role, r.NomRole 
         FROM utilisateurs u 
         JOIN roles r ON u.ID_Role = r.ID_Role
-        ORDER BY u.created_at DESC
+        ORDER BY GREATEST(u.created_at, u.updated_at) DESC;
     `;
     connection.query(sql, (err, results) => {
         if (err) {

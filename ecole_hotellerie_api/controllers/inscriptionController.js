@@ -18,8 +18,7 @@ JOIN
     etudiants e ON i.ID_Etudiant = e.ID_Etudiant
 JOIN 
     filiere f ON e.ID_Filiere = f.ID_Filiere
-ORDER BY 
-    i.created_at DESC;
+ORDER BY GREATEST(i.created_at, i.updated_at) DESC;
 `;
     connection.query(sql, (err, results) => {
         if (err) return res.status(500).send(err.toString());

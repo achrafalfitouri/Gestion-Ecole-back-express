@@ -7,7 +7,7 @@ const getAllPlannings = (req, res) => {
      Join matieres m on p.ID_Matiere=m.ID_Matiere 
      Join salle s on p.ID_Salle=s.ID_Salle 
      Join formateurs f on p.ID_Formateur=f.ID_Formateur
-     ORDER BY p.created_at DESC;`;
+     ORDER BY GREATEST(p.created_at, p.updated_at) DESC;`;
     connection.query(sql, (err, results) => {
         if (err) return res.status(500).send(err.toString());
         res.send(results);

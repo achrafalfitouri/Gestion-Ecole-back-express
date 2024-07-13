@@ -5,7 +5,7 @@ const getAllPaiementEtudiants = (req, res) => {
     const sql = `SELECT p.ID_PaiementEtudiants, p.ID_Inscription, p.ID_TypePaiement, p.ID_Etudiant, p.DatePaiementEtudiants, p.Montant, p.Reste, p.MontantTotal, e.NomEtudiant, e.PrenomEtudiant,e.Email,e.CIN, t.TypePaiement,e.ID_Etudiant 
     FROM paiementetudiants p JOIN etudiants e on p.ID_Etudiant=e.ID_Etudiant 
     JOIN typepaiement t on t.ID_TypePaiement = p.ID_TypePaiement
-     ORDER by p.created_at DESC;`;
+     ORDER BY GREATEST(p.created_at, p.updated_at) DESC;`;
     connection.query(sql, (err, results) => {
         if (err) return res.status(500).send(err.toString());
         res.send(results);

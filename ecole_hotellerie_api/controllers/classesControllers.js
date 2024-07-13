@@ -21,7 +21,7 @@ JOIN filiere f ON c.ID_Filiere = f.ID_Filiere
 JOIN anneeScolaire a ON a.ID_AnneeScolaire = c.ID_AnneeScolaire 
 JOIN niveau n ON n.ID_Classe = c.ID_Classe
 GROUP BY c.ID_Classe, c.NomClasse, c.ID_Filiere, c.ID_AnneeScolaire,c.Groupe,  f.NomFiliere, a.AnneeScolaire,n.Niveau 
-ORDER BY c.created_at DESC;
+ORDER BY GREATEST(c.created_at, c.updated_at) DESC;
 `;
     connection.query(sql, (err, results) => {
         if (err) return res.status(500).send(err.toString());
