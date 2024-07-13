@@ -2,8 +2,11 @@ const connection = require('../config/db');
 
 // Get all stages
 const getAllStages = (req, res) => {
-    const sql = `SELECT s.ID_Stage, s.ID_Etudiant, s.DateDebut, s.DateFin, s.Tuteur, s.Entreprise, e.NomEtudiant 
-    FROM stages s JOIN etudiants e ON s.ID_Etudiant = e.ID_Etudiant ORDER BY s.created_at DESC;
+    const sql = `SELECT s.ID_Stage, s.ID_Etudiant, s.DateDebut, s.DateFin, s.Tuteur, s.Entreprise, e.NomEtudiant ,e.PrenomEtudiant,e.ID_Filiere,e.ID_Classe,c.ID_Classe ,c.NomClasse,c.Groupe,c.ID_AnneeScolaire,a.AnneeScolaire,n.Niveau,n.ID_Niveau,f.NomFiliere FROM stages s JOIN etudiants e ON s.ID_Etudiant = e.ID_Etudiant 
+    JOIN classes c on c.ID_Classe=e.ID_Classe 
+    JOIN anneescolaire a on a.ID_AnneeScolaire= c.ID_AnneeScolaire JOIN niveau n on n.ID_Classe= c.ID_Classe 
+    JOIN filiere f on f.ID_Filiere=e.ID_Filiere 
+ORDER BY GREATEST(s.created_at, s.updated_at) DESC;
 `;
     connection.query(sql, (err, results) => {
         if (err) return res.status(500).send(err.toString());
