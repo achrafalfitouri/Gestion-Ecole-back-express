@@ -119,6 +119,7 @@ SELECT
     f.DateEmbauche AS DateDepense
 FROM 
     formateurs f
+    
 
 UNION ALL
 
@@ -140,7 +141,7 @@ FROM
     formateurs f
 JOIN 
     personnel p ON 1=1;
-
+where (f.created_at,p.created_at) as datecre = ?
 
 ;
 `;
