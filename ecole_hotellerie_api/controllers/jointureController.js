@@ -88,6 +88,27 @@ SELECT e.NomEtudiant,e.PrenomEtudiant,e.ID_Etudiant, i.ID_Inscription , i.ID_Etu
       res.send(results);
     });
   };
+    // Get Inscription par Etudiant by id Etudiant
+
+const getPaiementparEtudiant = (req, res) => {
+    const { id } = req.params;
+    const sql = `
+SELECT e.NomEtudiant,e.PrenomEtudiant,e.ID_Etudiant, p.ID_PaiementEtudiants , p.ID_Etudiant,p.Montant,p.Reste,p.MontantTotal FROM paiementetudiants p 
+JOIN etudiants e ON e.ID_Etudiant = p.ID_Etudiant 
+WHERE p.ID_Etudiant=? 
+ORDER BY p.created_at DESC;
+    `;
+    
+    connection.query(sql, [id], (err, results) => {
+      if (err) {
+        return res.status(500).send(err.toString());
+      }
+      if (results.length === 0) {
+        return res.status(404).send('No students found for the given class');
+      }
+      res.send(results);
+    });
+  };
 
 
 
@@ -95,6 +116,6 @@ module.exports = {
     getEtudiantClasse,
     getMatiereClasse,
     getFormateurMatiere,
-  
+    getPaiementparEtudiant,
     getInscriptionEtudiant
 };
