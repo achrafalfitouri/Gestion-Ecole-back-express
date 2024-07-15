@@ -30,6 +30,7 @@ const jointureRoutes = require('./routes/jointureRoutes');  // Ensure this path 
 const salleRoutes = require('./routes/salleRoutes');  // Ensure this path is correct
 const dashboardRoutes = require('./routes/dashboardRoutes');  // Ensure this path is correct
 
+const taxesRoutes = require('./routes/taxesRoutes');  // Ensure this path is correct
 
 const authenticateJWT = require('./middleware/auth');  // Ensure this path is correct
 const multer = require('multer');
@@ -181,6 +182,7 @@ app.use('/api/jointure', jointureRoutes);
 app.use('/api/salle', salleRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 
+app.use('/api/taxe', taxesRoutes);
 
 
 const PORT = process.env.PORT || 3000;
