@@ -32,15 +32,23 @@ order by i.DateDebutInscription desc
 };
 
 const getetudparfiliere = (req, res) => {
-    const sql = `select NombreEtudiant , NomFiliere from filiere GROUP BY NomFiliere;
-
-`;
-    connection.query(sql, (err, results) => {
+    const { id } = req.params;
+    const sql = `
+        SELECT f.ID_Filiere, f.NomFiliere,f.ID_Filiere, c.ID_Filiere, COUNT(e.ID_Etudiant) AS NombreEtudiants FROM filiere f JOIN classes c ON f.ID_Filiere = c.ID_Filiere JOIN etudiants e ON c.ID_Classe = e.ID_Classe WHERE c.ID_AnneeScolaire = ? GROUP BY f.ID_Filiere, f.NomFiliere;
+    `;
+    connection.query(sql, [id], (err, results) => {
         if (err) return res.status(500).send(err.toString());
         res.send(results);
     });
 };
 
+const getYears = (req, res) => {
+    const sql = 'SELECT DISTINCT AnneeScolaire, ID_AnneeScolaire FROM anneescolaire ORDER BY created_at DESC';
+    connection.query(sql, (err, results) => {
+        if (err) return res.status(500).send(err.toString());
+        res.send(results);
+    });
+};
 
 const getnbetudiantnv = (req, res) => {
     const sql = `
@@ -112,40 +120,31 @@ JOIN filiere f ON c.ID_Filiere = f.ID_Filiere GROUP BY e.ID_Etudiant, e.PrenomEt
 
 
 const getexpence = (req, res) => {
+    const { start_date, end_date } = req.query;
+
+    if (!start_date || !end_date) {
+        return res.status(400).send("Missing start_date or end_date query parameters");
+    }
+
     const sql = `
-SELECT 
-    'Formateur' AS Type, 
-    f.Salaire AS Salaire, 
-    f.DateEmbauche AS DateDepense
-FROM 
-    formateurs f
+        SELECT Mois_Paie, SUM(Salaire) AS Total_Salaire 
+        FROM (
+            SELECT ID_Formateur AS ID, NomFormateur AS Nom, PrenomFormateur AS Prenom, Salaire, Mois_Paie, created_at 
+            FROM formateurs 
+            WHERE created_at >= ? AND created_at <= ?
+            UNION ALL 
+            SELECT ID_Personnel AS ID, NomPersonnel AS Nom, PrenomPersonnel AS Prenom, Salaire, Mois_Paie, created_at 
+            FROM personnel 
+            WHERE created_at >= ? AND created_at <= ?
+        ) AS combined 
+        GROUP BY Mois_Paie 
+        ORDER BY Mois_Paie;
+    `;
 
-UNION ALL
-
-SELECT 
-    'Personnel' AS Type, 
-    p.Salaire AS Salaire, 
-    p.DateEmbauche AS DateDepense
-FROM 
-    personnel p
-
-UNION ALL
-
--- Total salary expense
-SELECT 
-    'Total' AS Type, 
-    SUM(f.Salaire) + SUM(p.Salaire) AS Salaire, 
-    NULL AS DateDepense
-FROM 
-    formateurs f
-JOIN 
-    personnel p ON 1=1;
-
-
-;
-`;
-    connection.query(sql, (err, results) => {
-        if (err) return res.status(500).send(err.toString());
+    connection.query(sql, [start_date, end_date, start_date, end_date], (err, results) => {
+        if (err) {
+            return res.status(500).send(err.toString());
+        }
         res.send(results);
     });
 };
@@ -153,32 +152,32 @@ JOIN
 
 
 const getgain = (req, res) => {
+    const { start_date, end_date } = req.query;
+
+    if (!start_date || !end_date) {
+        return res.status(400).send("Missing start_date or end_date query parameters");
+    }
+
     const sql = `
+        SELECT 
+            Mois_Paie,
+            SUM(i.FraisInscription) AS TotalRevenue
+        FROM 
+            inscription i
+        WHERE 
+            i.created_at >= ? AND i.created_at <= ?
+        GROUP BY 
+            Mois_Paie
+        ORDER BY 
+            FIELD(Mois_Paie, 'Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre');
+    `;
 
-SELECT 
-    f.ID_Filiere,
-    f.NomFiliere,
-    SUM(i.FraisInscription) AS TotalRevenue
-FROM 
-    inscriptions i
-JOIN 
-    etudiants e ON i.ID_Etudiant = e.ID_Etudiant
-JOIN 
-    filiere f ON e.ID_Filiere = f.ID_Filiere
-GROUP BY 
-    f.ID_Filiere, f.NomFiliere
-ORDER BY 
-    TotalRevenue DESC;
-
-
-
-;
-`;
-    connection.query(sql, (err, results) => {
+    connection.query(sql, [start_date, end_date], (err, results) => {
         if (err) return res.status(500).send(err.toString());
         res.status(200).send(results);
     });
 };
+
 
 module.exports = {
     getgain,
@@ -190,7 +189,8 @@ module.exports = {
     getetudparfiliere,
     getinscri,
     getNbrendezvous,
-    getnouveaurendezvous
+    getnouveaurendezvous,
+    getYears
 };
 
 
