@@ -5,11 +5,12 @@ const {
     getRendezvousById,
     createRendezvous,
     updateRendezvousById,
-    deleteRendezvousById
+    deleteRendezvousById,getThreeRendezvous
 } = require('../controllers/rendezvousController');
 const authenticateJWT = require('../middleware/auth');
 
 router.get('/', authenticateJWT, getAllRendezvous);
+router.get('/three', authenticateJWT, getThreeRendezvous);
 router.get('/:id', authenticateJWT, getRendezvousById);
 router.post('/', authenticateJWT, createRendezvous);
 router.put('/:id', authenticateJWT, updateRendezvousById);

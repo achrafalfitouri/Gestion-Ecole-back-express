@@ -117,7 +117,47 @@ JOIN filiere f ON c.ID_Filiere = f.ID_Filiere GROUP BY e.ID_Etudiant, e.PrenomEt
         res.send(results);
     });
 };
+const getinscriToday = (req, res) => {
+    const sql = `
+SELECT COUNT(*) AS total_inscription_today
+FROM inscription
+WHERE DATE(created_at) = CURDATE() OR DATE(updated_at) = CURDATE();
+`;
+    connection.query(sql, (err, results) => {
+        if (err) return res.status(500).send(err.toString());
+        res.send(results);
+    });
+};
+const getpersonelNb = (req, res) => {
+    const sql = `
+SELECT count(*) as total_personnel from personnel;
 
+`;
+    connection.query(sql, (err, results) => {
+        if (err) return res.status(500).send(err.toString());
+        res.send(results);
+    });
+};
+const getformateurNb = (req, res) => {
+    const sql = `
+SELECT count(*) as total_formateurs from formateurs;
+
+`;
+    connection.query(sql, (err, results) => {
+        if (err) return res.status(500).send(err.toString());
+        res.send(results);
+    });
+};
+const getfactureNb = (req, res) => {
+    const sql = `
+SELECT count(*) AS total_factures from factures;
+
+`;
+    connection.query(sql, (err, results) => {
+        if (err) return res.status(500).send(err.toString());
+        res.send(results);
+    });
+};
 
 const getexpence = (req, res) => {
     const { start_date, end_date } = req.query;
@@ -177,6 +217,28 @@ const getgain = (req, res) => {
         res.status(200).send(results);
     });
 };
+const getexpenceFour = (req, res) => {
+    const { start_date, end_date } = req.query;
+
+    if (!start_date || !end_date) {
+        return res.status(400).send("Missing start_date or end_date query parameters");
+    }
+
+    const sql = `
+        SELECT f.NomFournisseur, SUM(fc.Montant) AS TotalMontant FROM fournisseurs f JOIN factures fc ON f.ID_Fournisseur = fc.ID_Fournisseur
+
+
+ WHERE 
+            f.created_at >= ? AND f.created_at <= ?
+
+ GROUP BY f.NomFournisseur;
+    `;
+
+    connection.query(sql, [start_date, end_date], (err, results) => {
+        if (err) return res.status(500).send(err.toString());
+        res.status(200).send(results);
+    });
+};
 
 
 module.exports = {
@@ -190,7 +252,11 @@ module.exports = {
     getinscri,
     getNbrendezvous,
     getnouveaurendezvous,
-    getYears
+    getYears,
+    getexpenceFour,
+    getinscriToday,
+    getfactureNb,getformateurNb,
+    getpersonelNb
 };
 
 
