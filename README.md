@@ -10,7 +10,7 @@ A web application for managing school resources including trainers, student regi
 - **Student Registrations**: Handle student enrollment processes and track student data.
 - **Appointments Management**: Schedule and manage appointments between trainers and students.
 - **Invoice Management**: Generate and manage invoices for students based on their courses or sessions.
-- **Secure Authentication**: Use JWT to ensure secure login and enable user sessions.
+- **Secure Authentication**: Use JWT to ensure secure login and enable user sessions....
 
 ## Technologies
 
