@@ -45,7 +45,7 @@ A web application for managing school resources including trainers, student regi
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/Gestion-Ecole-back-express.git
+   git clone https://github.com/achrafalfitouri/Gestion-Ecole-back-express.git
    cd Gestion-Ecole-back-express/ecole_hotellerie_api
    
 2. Run the following command:
